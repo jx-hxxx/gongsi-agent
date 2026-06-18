@@ -1,0 +1,11 @@
+[
+  {
+    "company_name": "예시전자",
+    "title": "단일판매ㆍ공급계약체결",
+    "raw_text": "1. 계약 내용\n당사는 ABC와 디스플레이 패널 공급계약을 체결하였습니다. 계약금액은 1,200억원이며 최근 매출액 대비 15.3% 규모입니다.\n\n2. 계약 상대방\nABC Corporation\n\n3. 계약 기간\n2026-03-01 ~ 2027-02-28",
+    "qa": [
+      { "question": "계약 금액은 얼마인가?", "golden_answer": "1,200억원" },
+      { "question": "계약 상대방은 누구인가?", "golden_answer": "ABC Corporation" }
+    ]
+  }
+]

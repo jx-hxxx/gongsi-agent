@@ -1,0 +1,28 @@
+# --- Web / API ---
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.1
+python-multipart==0.0.20
+
+# --- Agent framework (litellm 포함) ---
+crewai==0.86.0
+
+# --- LLM / 임베딩 (OpenAI) ---
+openai==1.109.1                # gpt-5.1 / o4-mini / text-embedding-3-small
+
+# --- RAG ---
+chromadb==0.5.23
+
+# --- 데이터 연동 ---
+httpx==0.28.1                  # OpenDART / ECOS REST 호출
+pypdf==5.1.0                   # 공시 PDF 파싱 (대체 데이터 경로)
+beautifulsoup4==4.12.3         # 공시 HTML/XML 정리
+
+# --- 유틸 ---
+python-dotenv==1.0.1
+
+# --- (선택) 로컬 임베딩 BGE-m3 — OpenAI 임베딩 쓰면 불필요(torch 무거움) ---
+# sentence-transformers==3.3.1
+# FlagEmbedding==1.3.3
+# anthropic==0.42.0            # (레거시) Claude 경로용

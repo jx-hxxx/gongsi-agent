@@ -1,0 +1,311 @@
+{
+  "title": "공시분석 AI Chat API — 데이터 스키마 (v2.0)",
+  "endpoint": "POST /api/v1/chat",
+  "request": {
+    "$defs": {
+      "ChatMessage": {
+        "properties": {
+          "role": {
+            "enum": [
+              "user",
+              "assistant"
+            ],
+            "title": "Role",
+            "type": "string"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          }
+        },
+        "required": [
+          "role",
+          "content"
+        ],
+        "title": "ChatMessage",
+        "type": "object"
+      },
+      "CompanyContext": {
+        "properties": {
+          "corpCode": {
+            "title": "Corpcode",
+            "type": "string"
+          },
+          "corpName": {
+            "title": "Corpname",
+            "type": "string"
+          }
+        },
+        "required": [
+          "corpCode",
+          "corpName"
+        ],
+        "title": "CompanyContext",
+        "type": "object"
+      }
+    },
+    "properties": {
+      "roomId": {
+        "title": "Roomid",
+        "type": "integer"
+      },
+      "userSeq": {
+        "title": "Userseq",
+        "type": "integer"
+      },
+      "companyContext": {
+        "$ref": "#/$defs/CompanyContext"
+      },
+      "messages": {
+        "items": {
+          "$ref": "#/$defs/ChatMessage"
+        },
+        "title": "Messages",
+        "type": "array"
+      }
+    },
+    "required": [
+      "roomId",
+      "userSeq",
+      "companyContext"
+    ],
+    "title": "ChatV2Request",
+    "type": "object"
+  },
+  "response": {
+    "$defs": {
+      "ErrorOut": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "retriable": {
+            "title": "Retriable",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "retriable"
+        ],
+        "title": "ErrorOut",
+        "type": "object"
+      },
+      "SourceItem": {
+        "properties": {
+          "rceptNo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Rceptno"
+          },
+          "reportNm": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Reportnm"
+          },
+          "rceptDt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Rceptdt"
+          },
+          "sectionTitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Sectiontitle"
+          },
+          "quote": {
+            "title": "Quote",
+            "type": "string"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Score"
+          }
+        },
+        "required": [
+          "quote"
+        ],
+        "title": "SourceItem",
+        "type": "object"
+      },
+      "VerificationOut": {
+        "properties": {
+          "verdict": {
+            "title": "Verdict",
+            "type": "string"
+          },
+          "groundedScore": {
+            "title": "Groundedscore",
+            "type": "number"
+          }
+        },
+        "required": [
+          "verdict",
+          "groundedScore"
+        ],
+        "title": "VerificationOut",
+        "type": "object"
+      }
+    },
+    "properties": {
+      "roomId": {
+        "title": "Roomid",
+        "type": "integer"
+      },
+      "intent": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Intent"
+      },
+      "answerText": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Answertext"
+      },
+      "sourceContent": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Sourcecontent"
+      },
+      "macroSnapshot": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Macrosnapshot"
+      },
+      "sources": {
+        "anyOf": [
+          {
+            "items": {
+              "$ref": "#/$defs/SourceItem"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Sources"
+      },
+      "outOfScope": {
+        "default": false,
+        "title": "Outofscope",
+        "type": "boolean"
+      },
+      "detectedCompany": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Detectedcompany"
+      },
+      "needsClarification": {
+        "default": false,
+        "title": "Needsclarification",
+        "type": "boolean"
+      },
+      "verification": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/VerificationOut"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "error": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/ErrorOut"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      }
+    },
+    "required": [
+      "roomId"
+    ],
+    "title": "ChatV2Response",
+    "type": "object"
+  }
+}
