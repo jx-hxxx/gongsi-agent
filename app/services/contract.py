@@ -16,6 +16,11 @@ from app.schemas.external import (
 from app.services import macro
 
 _MAX_HISTORY = 10  # 단기 메모리 안전 상한 (최근 메시지 N개만 사용)
+_DART_VIEWER = "https://dart.fss.or.kr/dsaf001/main.do?rcpNo="  # 원문 뷰어
+
+
+def _dart_url(rcept_no: str | None) -> str | None:
+    return f"{_DART_VIEWER}{rcept_no}" if rcept_no else None
 
 
 def to_internal(req: ChatV2Request) -> ChatRequest:
@@ -60,6 +65,7 @@ def to_v2(room_id: int, corp_name: str, r: ChatResponse) -> ChatV2Response:
         SourceItem(
             rceptNo=c.rcept_no, reportNm=c.report_nm, rceptDt=c.rcept_dt,
             sectionTitle=c.section_title, quote=c.quote, score=c.score,
+            dartUrl=_dart_url(c.rcept_no),
         )
         for c in src_cits
     ] or None

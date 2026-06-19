@@ -11,7 +11,8 @@ from chromadb.config import Settings as ChromaSettings
 from app.config import get_settings
 from app.rag.chunker import Chunk
 from app.rag.embedder import get_embedder
-from app.rag.rerank import rerank_rows
+from app.rag.rerank import keyword_terms, rerank_rows
+from app.rag.rerank import _norm as _kw_norm
 from app.schemas.disclosure import Citation
 
 
@@ -28,6 +29,8 @@ class VectorStore:
             settings=ChromaSettings(anonymized_telemetry=False, allow_reset=True),
         )
         self.embedder = get_embedder()
+        # keyword fallback 용 본문 캐시: {collection_name: (count, [(id, doc, meta), ...])}
+        self._doc_cache: dict[str, tuple[int, list]] = {}
 
     def index_chunks(self, analysis_id: str, chunks: list[Chunk]) -> int:
         """청크를 임베딩해 저장한다. 저장된 청크 수를 반환."""
@@ -119,6 +122,30 @@ class VectorStore:
             )
         return len(chunks)
 
+    def _all_docs(self, collection_name: str, coll) -> list:
+        """컬렉션 전체 (id, doc, meta) 를 메모리 캐시로 보관(count 바뀌면 갱신)."""
+        cnt = coll.count()
+        cached = self._doc_cache.get(collection_name)
+        if cached and cached[0] == cnt:
+            return cached[1]
+        got = coll.get(include=["documents", "metadatas"])
+        rows = list(zip(got.get("ids", []), got.get("documents", []), got.get("metadatas", [])))
+        self._doc_cache[collection_name] = (cnt, rows)
+        return rows
+
+    def _keyword_scan(self, collection_name: str, coll, query: str) -> list:
+        """정량 표 도메인 구를 본문에서 직접 스캔(정규화 substring). 매칭 (id, doc, meta) 반환."""
+        terms = keyword_terms(query)
+        if not terms:
+            return []
+        nterms = [_kw_norm(t) for t in terms]
+        hits = []
+        for cid, doc, meta in self._all_docs(collection_name, coll):
+            dn = _kw_norm(doc or "")
+            if any(t in dn for t in nterms):
+                hits.append((cid, doc or "", meta or {}))
+        return hits
+
     def search_corpus(
         self,
         collection_name: str,
@@ -169,6 +196,25 @@ class VectorStore:
                 "distance": float(dist) if dist is not None else None,
                 "score": (1 - float(dist)) if dist is not None else 0.0,
             })
+
+        # keyword fallback: 정량 표 도메인 구를 본문에서 직접 스캔해 후보에 합류시킨다.
+        # (벡터가 표 숫자를 못 끌어오는 재현율 누수 보강 — 일반 질문이면 terms 없어 no-op)
+        if settings.keyword_fallback_enabled:
+            existing = {r["id"] for r in rows}
+            kw_score = 0.5  # 명목 base — 순위는 rerank 의 도메인 가점(0.46)이 결정
+            for cid, doc, m in self._keyword_scan(collection_name, coll, query):
+                if cid in existing:
+                    continue
+                dt = m.get("rcept_dt") or None
+                if date_from and (dt or "") < date_from:
+                    continue
+                if date_to and (dt or "99999999") > date_to:
+                    continue
+                rows.append({
+                    "id": cid, "doc": doc, "meta": m,
+                    "distance": None, "score": kw_score,
+                })
+                existing.add(cid)
 
         # 정렬: 최신 우선이면 날짜 우선(rerank 점수 보조), 아니면 rerank(켜졌을 때) 또는 유사도
         if prefer_recent:

@@ -34,6 +34,7 @@ class SourceItem(BaseModel):
     sectionTitle: Optional[str] = None
     quote: str
     score: Optional[float] = None
+    dartUrl: Optional[str] = None   # DART 원문 뷰어 링크 (rceptNo 기반)
 
 
 class VerificationOut(BaseModel):

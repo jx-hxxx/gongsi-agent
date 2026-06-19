@@ -190,6 +190,35 @@ def _noise_penalty(q_norm: str, doc_norm: str, sec_norm: str) -> float:
     return min(max(penalty, 0.0), 1.0)
 
 
+def keyword_terms(query: str) -> list[str]:
+    """keyword fallback 으로 본문을 직접 스캔할 도메인 구(句).
+
+    정량 표 질의(발행주식총수/유통주식수/종속기업수/자기주식)와 질문에 등장한
+    핵심구만 반환한다. 해당 없으면 빈 리스트 → fallback 미동작(일반 질문 무영향).
+    매칭은 정규화(_norm, 공백 제거) 후 substring 이라 "발행주식의 총수" 같은 띄어쓰기도 잡힘.
+    """
+    q = _norm(query)
+    terms: list[str] = []
+    if _ask_issue_total(q):
+        terms += ["발행주식총수", "발행주식의총수"]
+    if _ask_circulating(q):
+        terms += ["유통주식수"]
+    if _ask_subsidiary(q):
+        terms += ["종속기업", "종속회사"]
+    if _ask_buyback(q):
+        terms += ["자기주식"]
+    for p in IMPORTANT_PHRASES:
+        if _norm(p) in q:
+            terms.append(p)
+    seen: set[str] = set()
+    out: list[str] = []
+    for t in terms:
+        if t not in seen:
+            seen.add(t)
+            out.append(t)
+    return out
+
+
 def _phrase_score(q_norm: str, doc_norm: str) -> float:
     hits = total = 0
     for phrase in IMPORTANT_PHRASES:
