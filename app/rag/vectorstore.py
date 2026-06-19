@@ -11,6 +11,7 @@ from chromadb.config import Settings as ChromaSettings
 from app.config import get_settings
 from app.rag.chunker import Chunk
 from app.rag.embedder import get_embedder
+from app.rag.rerank import rerank_rows
 from app.schemas.disclosure import Citation
 
 
@@ -141,13 +142,17 @@ class VectorStore:
         except Exception:
             return []
 
-        # 날짜 필터·최신정렬이 있으면 후보 풀을 넉넉히 뽑아 Python 에서 거른다
-        narrowing = bool(date_from or date_to or prefer_recent)
-        n = max(k * 8, 40) if narrowing else k
+        # 후보를 넉넉히 뽑는다 (rerank·날짜필터·최신정렬에 쓸 풀).
+        candidate_k = max(k, settings.candidate_k)
+        n = max(candidate_k, k * 8) if (date_from or date_to or prefer_recent) else candidate_k
         q_emb = self.embedder.embed_query(query)
-        res = coll.query(query_embeddings=[q_emb], n_results=n)
+        res = coll.query(
+            query_embeddings=[q_emb], n_results=n,
+            include=["documents", "metadatas", "distances"],
+        )
 
-        citations: list[Citation] = []
+        # 후보 rows 구성 + 기간 후필터
+        rows: list[dict] = []
         ids = res.get("ids", [[]])[0]
         docs = res.get("documents", [[]])[0]
         metas = res.get("metadatas", [[]])[0]
@@ -155,28 +160,44 @@ class VectorStore:
         for cid, doc, meta, dist in zip(ids, docs, metas, dists):
             m = meta or {}
             dt = m.get("rcept_dt") or None
-            # 기간 후필터
             if date_from and (dt or "") < date_from:
                 continue
             if date_to and (dt or "99999999") > date_to:
                 continue
+            rows.append({
+                "id": cid, "doc": doc or "", "meta": m,
+                "distance": float(dist) if dist is not None else None,
+                "score": (1 - float(dist)) if dist is not None else 0.0,
+            })
+
+        # 정렬: 최신 우선이면 날짜 우선(rerank 점수 보조), 아니면 rerank(켜졌을 때) 또는 유사도
+        if prefer_recent:
+            if settings.rerank_enabled:
+                rerank_rows(query, rows)
+            rows.sort(
+                key=lambda r: (r["meta"].get("rcept_dt") or "", r.get("rerank_score", r["score"])),
+                reverse=True,
+            )
+        elif settings.rerank_enabled:
+            rerank_rows(query, rows)  # rerank_score 내림차순 정렬됨
+        else:
+            rows.sort(key=lambda r: r["score"], reverse=True)
+
+        citations: list[Citation] = []
+        for r in rows[:k]:
+            m = r["meta"]
             citations.append(
                 Citation(
-                    chunk_id=cid,
+                    chunk_id=r["id"],
                     section_title=m.get("section_title") or None,
-                    quote=doc,
-                    score=round(1 - float(dist), 4) if dist is not None else None,
+                    quote=r["doc"],
+                    score=round(r["score"], 4) if r["distance"] is not None else None,
                     rcept_no=m.get("rcept_no") or None,
                     report_nm=m.get("report_nm") or None,
-                    rcept_dt=dt,
+                    rcept_dt=m.get("rcept_dt") or None,
                 )
             )
-
-        if prefer_recent:
-            # 접수일 내림차순(최신 먼저), 동일 날짜면 유사도 높은 순
-            citations.sort(key=lambda c: (c.rcept_dt or "", c.score or 0.0), reverse=True)
-
-        return citations[:k]
+        return citations
 
     def corpus_count(self, collection_name: str) -> int:
         try:

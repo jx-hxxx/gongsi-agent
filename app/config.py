@@ -39,6 +39,8 @@ class Settings(BaseSettings):
     chunk_size: int = 800          # 청크당 대략 글자 수
     chunk_overlap: int = 120       # 청크 간 겹침
     top_k: int = 5                 # 검색 시 가져올 근거 문단 수
+    rerank_enabled: bool = True    # 도메인 가점/노이즈 감점 rerank 사용
+    candidate_k: int = 20          # rerank 전 후보 검색 개수
 
     # OpenAI 모델은 litellm 이 모델명만으로 라우팅한다 (prefix 불필요).
     @property
