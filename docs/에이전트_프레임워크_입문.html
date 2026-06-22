@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM 에이전트 프레임워크 입문 — LangChain · LangGraph · PydanticAI</title>
+<style>
+  :root{
+    --bg:#0f1220; --card:#1a1f35; --ink:#e8ebf5; --muted:#9aa3c0; --line:#2b3358;
+    --lc:#1eae98; --lg:#4f8cff; --pa:#e0407b; --cr:#f0a500; --accent:#7c5cff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;line-height:1.7}
+  a{color:#9fc3ff;text-decoration:none}
+  header{padding:48px 20px 28px;text-align:center;background:radial-gradient(900px 300px at 50% -50px,#23284a,transparent)}
+  header h1{margin:0 0 8px;font-size:30px}
+  header p{margin:0;color:var(--muted)}
+  nav{position:sticky;top:0;z-index:5;background:rgba(15,18,32,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:10px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+  nav a{font-size:13px;padding:6px 11px;border:1px solid var(--line);border-radius:20px;color:var(--ink)}
+  nav a:hover{border-color:var(--accent)}
+  main{max-width:920px;margin:0 auto;padding:28px 20px 80px}
+  section{margin:34px 0;scroll-margin-top:60px}
+  h2{font-size:23px;border-left:4px solid var(--accent);padding-left:12px;margin:0 0 14px}
+  h3{font-size:18px;margin:22px 0 8px}
+  p,li{color:#dfe4f5}
+  .lead{color:var(--muted);font-size:15px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:16px 0}
+  .card.lc{border-top:3px solid var(--lc)} .card.lg{border-top:3px solid var(--lg)}
+  .card.pa{border-top:3px solid var(--pa)} .card.cr{border-top:3px solid var(--cr)}
+  .tag{display:inline-block;font-size:12px;padding:2px 9px;border-radius:20px;background:#252b4a;color:#bcc6ec;margin-left:6px;vertical-align:middle}
+  .analogy{background:#161b30;border-left:3px solid var(--accent);padding:10px 14px;border-radius:8px;margin:10px 0;color:#cdd5f2}
+  .analogy b{color:#fff}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr}}
+  .pro,.con{border-radius:8px;padding:10px 12px;font-size:14px}
+  .pro{background:#10231c;border:1px solid #1e5a45} .con{background:#26161c;border:1px solid #5a2030}
+  .pro b{color:#54e0bf} .con b{color:#ff8aa6}
+  pre{background:#0b0e1a;border:1px solid var(--line);border-radius:10px;padding:14px;overflow:auto;font-size:13px}
+  code{font-family:"SF Mono",Menlo,Consolas,monospace}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:#20254a}
+  .flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0}
+  .node{background:#222a4d;border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:13px}
+  .arrow{color:var(--muted)}
+  .when{font-size:14px;background:#161b30;border-radius:8px;padding:8px 12px;margin-top:8px}
+  .when b{color:#ffd479}
+  footer{text-align:center;color:var(--muted);font-size:13px;padding:30px 20px;border-top:1px solid var(--line)}
+  .pill{font-size:11px;padding:1px 7px;border-radius:10px;border:1px solid var(--line);color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <h1>LLM 에이전트 프레임워크 입문</h1>
+  <p>개발은 해봤지만 이 영역은 처음인 분을 위한 가벼운 지도 — LangChain · LangGraph · PydanticAI (+CrewAI 번외)</p>
+</header>
+
+<nav>
+  <a href="#why">왜 프레임워크?</a>
+  <a href="#langchain">LangChain</a>
+  <a href="#langgraph">LangGraph</a>
+  <a href="#pydanticai">PydanticAI</a>
+  <a href="#crewai">번외: CrewAI</a>
+  <a href="#confuse">헷갈리는 것들</a>
+  <a href="#compare">한눈 비교</a>
+  <a href="#decide">언제 무엇을?</a>
+  <a href="#glossary">용어 사전</a>
+</nav>
+
+<main>
+
+<section id="why">
+  <h2>0. 왜 "프레임워크"가 필요할까?</h2>
+  <p class="lead">LLM을 쓰는 건 사실 <b>API 한 번 호출</b>이 전부입니다. 그런데 실무에선 한 번으로 안 끝나요.</p>
+  <div class="flow">
+    <span class="node">질문</span><span class="arrow">→</span>
+    <span class="node">관련 문서 검색(RAG)</span><span class="arrow">→</span>
+    <span class="node">도구 사용(계산·API)</span><span class="arrow">→</span>
+    <span class="node">여러 단계 추론</span><span class="arrow">→</span>
+    <span class="node">결과를 정해진 형식으로</span><span class="arrow">→</span>
+    <span class="node">검증</span>
+  </div>
+  <p>이런 <b>여러 단계 · 도구 · 검색 · 구조화 출력 · 상태 관리 · 여러 에이전트 협업</b>을 매번 직접 짜면 코드가 금방 엉킵니다. 프레임워크는 이 반복 작업을 정리해 주는 도구예요. 세 가지가 각각 <b>다른 부분</b>을 잘합니다.</p>
+  <div class="analogy">🧭 <b>한 줄 지도</b> — LangChain = "부품 상자(레고)", LangGraph = "순서도를 코드로", PydanticAI = "타입 안전한 에이전트", CrewAI = "역할극 팀".</div>
+</section>
+
+<section id="langchain">
+  <h2>1. LangChain <span class="tag">부품 상자 / 통합</span></h2>
+  <div class="card lc">
+    <div class="analogy">🧱 <b>비유</b>: 레고 부품 상자. LLM·프롬프트·검색기·도구·메모리 같은 <b>부품을 표준 인터페이스로 제공</b>하고, 이를 체인(chain)으로 이어 붙인다.</div>
+    <h3>핵심 개념</h3>
+    <ul>
+      <li><b>컴포넌트</b>: LLM 래퍼, 프롬프트 템플릿, 임베딩, 벡터스토어, 도구(tool), 메모리 등 — 공급자가 달라도 같은 방식으로 사용.</li>
+      <li><b>체인(Chain)</b>: 컴포넌트를 순서대로 연결한 파이프라인. (예: 프롬프트 → LLM → 출력파서)</li>
+      <li>엄청난 <b>통합(integration)</b> 생태계 — 수백 개 DB·모델·도구 커넥터.</li>
+    </ul>
+    <div class="grid2">
+      <div class="pro"><b>장점</b> · 통합이 가장 많음 · 빠른 프로토타입 · RAG 부품이 풍부</div>
+      <div class="con"><b>단점</b> · 추상화가 많아 무겁고 "마법" 같음 · 버전 변화 잦음 · 복잡한 흐름엔 부족</div>
+    </div>
+    <div class="when">🟡 <b>언제</b>: 여러 데이터·모델을 빠르게 붙여 RAG/프로토타입을 만들 때. "부품을 가져다 조립"이 필요할 때.</div>
+  </div>
+</section>
+
+<section id="langgraph">
+  <h2>2. LangGraph <span class="tag">흐름 제어 / 오케스트레이션</span></h2>
+  <div class="card lg">
+    <div class="analogy">🗺️ <b>비유</b>: 순서도(flowchart)를 코드로. 작업을 <b>노드</b>로, 연결을 <b>엣지</b>로 그리고, <b>상태(state)</b>를 들고 돌아다닌다. (LangChain 팀이 만듦)</div>
+    <h3>핵심 개념</h3>
+    <ul>
+      <li><b>노드(Node)</b> = 한 작업(LLM 호출·검색·도구). <b>엣지(Edge)</b> = 다음 노드 결정(<b>조건부 분기</b> 가능).</li>
+      <li><b>상태(State)</b> = 질문·검색결과·답·에러 등 누적 데이터. 노드가 읽고 갱신.</li>
+      <li><b>사이클(반복)·병렬·체크포인트(중간 저장)·사람 개입(human-in-the-loop)</b> 지원.</li>
+    </ul>
+    <div class="flow">
+      <span class="node">router</span><span class="arrow">→ (조건)</span>
+      <span class="node">검색</span><span class="arrow">→</span>
+      <span class="node">작성</span><span class="arrow">→</span>
+      <span class="node">검증</span><span class="arrow">→ 실패면 ↺ 재시도</span>
+    </div>
+    <div class="grid2">
+      <div class="pro"><b>장점</b> · 복잡한 제어흐름(분기·반복·병렬)에 강함 · 부분실패 격리 · 관찰·영속성 · <b>생태계 인지도 최고</b></div>
+      <div class="con"><b>단점</b> · 단순 작업엔 과함 · 상태 타입 검증은 느슨(런타임 자동검증 약함)</div>
+    </div>
+    <div class="when">🟦 <b>언제</b>: 여러 단계·조건분기·여러 에이전트가 협력하는 <b>복잡한 워크플로우</b>. "흐름 자체가 복잡할 때".</div>
+  </div>
+</section>
+
+<section id="pydanticai">
+  <h2>3. PydanticAI <span class="tag">타입 안전 / 구조화 출력</span></h2>
+  <div class="card pa">
+    <div class="analogy">📐 <b>비유</b>: 규격이 보장되는 자판기. "이 형식(Pydantic 모델)으로 내놔"라고 하면 <b>반드시 그 형식으로 검증해서</b> 주고, 어긋나면 자동 재시도. (Pydantic 팀이 만듦, 2025 V1)</div>
+    <h3>핵심 개념</h3>
+    <ul>
+      <li><b>구조화 출력이 1급 시민</b>: <code>Agent(output_type=내Pydantic모델)</code> → 결과를 Pydantic으로 <b>검증 + 실패 시 자동 재시도</b>.</li>
+      <li><b>타입 안전</b>: 파이썬 타입힌트 기반 → IDE 자동완성·정적 검사·런타임 검증.</li>
+      <li><b>멀티에이전트 3패턴</b>: ① 위임(에이전트를 도구처럼 호출) ② 핸드오프(파이썬 코드로 순차 위임) ③ <b>pydantic-graph</b>(LangGraph식 그래프).</li>
+      <li>Logfire 관찰성 내장.</li>
+    </ul>
+    <pre><code># 가장 단순한 형태 — "구조화된 답"을 타입 안전하게
+from pydantic import BaseModel
+from pydantic_ai import Agent
+
+class Answer(BaseModel):
+    intent: str
+    text: str
+
+agent = Agent("openai:gpt-4o-mini", output_type=Answer)
+res = agent.run_sync("이 공시 요약해줘")
+print(res.output.intent, res.output.text)  # 검증된 Answer 객체</code></pre>
+    <div class="grid2">
+      <div class="pro"><b>장점</b> · 코드량 최소 · 타입 안전+자동 검증/재시도 · Pydantic 쓰는 코드에 자연스러움 · 가벼움</div>
+      <div class="con"><b>단점</b> · 신생(인지도 LangGraph보다 낮음) · 초복잡 흐름은 pydantic-graph 필요</div>
+    </div>
+    <div class="when">🟥 <b>언제</b>: <b>구조화된 결과·타입 안전</b>이 중요하고 흐름은 그리 복잡하지 않을 때. 이미 Pydantic을 쓰는 코드베이스.</div>
+  </div>
+</section>
+
+<section id="crewai">
+  <h2>4. 번외 — CrewAI <span class="tag">역할극 팀</span></h2>
+  <div class="card cr">
+    <div class="analogy">🎭 <b>비유</b>: 역할극 팀. 에이전트마다 <b>역할(role)·목표(goal)</b>를 주고 <b>crew</b>로 묶어 협업시킨다.</div>
+    <p>"리서처 → 작가 → 검수자" 처럼 역할을 나눠 팀으로 일을 시키는 직관적 추상화. 프로토타입을 가장 빨리 만들 수 있다는 게 매력. 다만 <b>세밀한 흐름 제어·관찰·타입 안전은 약하고 의존성이 무겁다</b>. (별도 오케스트레이션 없이 단일 에이전트 래퍼로만 쓰면 "그냥 LLM 호출"과 다를 바 없어져 가치가 떨어짐 — 자주 하는 실수.)</p>
+    <div class="when">🟧 <b>언제</b>: 역할 기반 협업 데모를 빠르게 만들 때. 단, 제어가 중요하면 LangGraph/PydanticAI가 낫다.</div>
+  </div>
+</section>
+
+<section id="confuse">
+  <h2>5. 번외 — 자주 헷갈리는 것들</h2>
+  <table>
+    <tr><th>혼동 포인트</th><th>정리</th></tr>
+    <tr><td><b>LangChain vs LangGraph</b></td><td>같은 팀. LangChain = 부품·통합 라이브러리, LangGraph = 그 위의 <b>흐름 오케스트레이션</b>(상태그래프). 보통 함께 씀.</td></tr>
+    <tr><td><b>LlamaIndex</b></td><td>RAG·<b>데이터 인덱싱 특화</b> 프레임워크(문서 요약 인덱스 등). "검색/인덱싱"에 강점 — LangChain과 자주 비교.</td></tr>
+    <tr><td><b>OpenAI Agents SDK</b></td><td>OpenAI 공식 <b>경량</b> 에이전트 SDK. 단순·OpenAI 중심.</td></tr>
+    <tr><td><b>Microsoft AutoGen</b></td><td>여러 에이전트가 <b>대화하며 협업</b>하는 멀티에이전트 프레임워크.</td></tr>
+    <tr><td><b>litellm</b></td><td>프레임워크 아님. 여러 LLM 공급자(OpenAI·Anthropic 등)를 <b>한 인터페이스로 호출</b>하는 어댑터. (CrewAI 내부에서도 사용)</td></tr>
+    <tr><td><b>"에이전트 vs 체인 vs 워크플로우"</b></td><td>체인=정해진 순서, 에이전트=LLM이 다음 행동을 <b>스스로 결정</b>(도구 선택 등), 워크플로우/그래프=분기·반복 있는 흐름. 경계는 흐릿하게 섞임.</td></tr>
+    <tr><td><b>RAG는 프레임워크인가?</b></td><td>아니다. RAG = "검색해서 찾은 근거로 답하는 <b>방식</b>". 위 프레임워크들로 구현하는 패턴.</td></tr>
+  </table>
+</section>
+
+<section id="compare">
+  <h2>6. 한눈 비교</h2>
+  <table>
+    <tr><th>프레임워크</th><th>한 줄 정체성</th><th>강점</th><th>약점</th><th>언제</th></tr>
+    <tr><td><b>LangChain</b></td><td>부품 상자(레고)</td><td>통합 풍부·빠른 조립</td><td>무겁고 추상화 많음</td><td>RAG·프로토타입</td></tr>
+    <tr><td><b>LangGraph</b></td><td>순서도를 코드로</td><td>복잡 흐름·분기·병렬·인지도</td><td>단순 작업엔 과함</td><td>복잡 워크플로우</td></tr>
+    <tr><td><b>PydanticAI</b></td><td>타입 안전 에이전트</td><td>구조화 출력·검증·경량</td><td>신생·초복잡 흐름은 보강 필요</td><td>구조화·타입 중시</td></tr>
+    <tr><td><b>CrewAI</b></td><td>역할극 팀</td><td>역할 협업·빠른 데모</td><td>제어·관찰·타입 약함</td><td>역할 기반 프로토타입</td></tr>
+  </table>
+  <p class="lead">참고로 실무에선 <b>섞어 쓰기</b>도 흔합니다. 예: PydanticAI로 에이전트(구조화·타입) + LangGraph로 오케스트레이션(흐름·영속). 또는 LangChain 부품 위에 LangGraph 흐름.</p>
+</section>
+
+<section id="decide">
+  <h2>7. 언제 무엇을? (가벼운 결정 가이드)</h2>
+  <div class="card">
+    <ul>
+      <li>📦 <b>"여러 도구·DB를 빠르게 붙여 RAG부터"</b> → <b>LangChain</b> (+ 검색 강화 필요하면 LlamaIndex)</li>
+      <li>🗺️ <b>"단계가 많고 분기·반복·여러 에이전트 협업"</b> → <b>LangGraph</b></li>
+      <li>📐 <b>"결과를 정해진 형식으로 안전하게, 코드는 깔끔하게"</b> → <b>PydanticAI</b> (특히 이미 Pydantic 사용 중이면)</li>
+      <li>🎭 <b>"역할 나눠 협업하는 데모를 가장 빨리"</b> → <b>CrewAI</b></li>
+      <li>🧪 <b>"그냥 한 번 부르고 끝"</b> → 프레임워크 없이 OpenAI/litellm 직접 호출도 충분</li>
+    </ul>
+    <div class="analogy">💡 입문 팁: 처음엔 <b>직접 LLM 호출 → 막히는 부분만 프레임워크 도입</b>이 이해가 빠릅니다. "프레임워크부터"가 아니라 "필요해서 도입".</div>
+  </div>
+</section>
+
+<section id="glossary">
+  <h2>8. 용어 사전</h2>
+  <table>
+    <tr><th>용어</th><th>쉬운 뜻</th></tr>
+    <tr><td>LLM</td><td>대형 언어모델. 텍스트를 입력받아 텍스트를 생성(GPT 등).</td></tr>
+    <tr><td>프롬프트</td><td>LLM에게 주는 지시·입력 텍스트.</td></tr>
+    <tr><td>토큰</td><td>LLM이 세는 글자 조각 단위. 비용·길이의 기준.</td></tr>
+    <tr><td>임베딩</td><td>글을 숫자 벡터로 바꿔 "뜻이 비슷한 것"을 찾게 함.</td></tr>
+    <tr><td>RAG</td><td>지어내지 않고, 관련 문서를 먼저 찾아 그 근거로 답하는 방식.</td></tr>
+    <tr><td>도구(Tool)</td><td>에이전트가 호출하는 함수(검색·계산·API 등).</td></tr>
+    <tr><td>에이전트</td><td>LLM이 도구를 쓰거나 다음 행동을 스스로 정하며 일을 수행하는 단위.</td></tr>
+    <tr><td>체인(Chain)</td><td>컴포넌트를 정해진 순서로 이은 파이프라인.</td></tr>
+    <tr><td>그래프/노드/엣지</td><td>작업(노드)을 연결(엣지)해 분기·반복이 가능한 흐름.</td></tr>
+    <tr><td>상태(State)</td><td>흐름이 진행되며 누적·갱신되는 데이터 묶음.</td></tr>
+    <tr><td>구조화 출력</td><td>자유 텍스트가 아니라 정해진 형식(JSON/Pydantic)으로 받는 결과.</td></tr>
+    <tr><td>오케스트레이션</td><td>여러 단계·에이전트를 누가 언제 무엇을 할지 조율하는 것.</td></tr>
+  </table>
+</section>
+
+</main>
+<footer>
+  입문용 개관 — 정확한 API·최신 기능은 각 공식 문서 확인.<br>
+  본 프로젝트(gongsi-agent) 맥락의 프레임워크 선택은 <span class="pill">docs/production전환_개발계획.md</span> 참고.
+</footer>
+</body>
+</html>
