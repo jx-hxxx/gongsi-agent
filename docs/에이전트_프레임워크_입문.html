@@ -45,6 +45,9 @@
   .arrow{color:var(--muted)}
   .when{font-size:14px;background:#161b30;border-radius:8px;padding:8px 12px;margin-top:8px}
   .when b{color:#ffd479}
+  .scenario{font-size:14px;background:#13182e;border:1px dashed var(--accent);border-radius:8px;padding:11px 13px;margin-top:8px}
+  .scenario .h{display:block;color:#fff;font-weight:600;margin-bottom:4px}
+  .scenario b{color:#bfa3ff}
   footer{text-align:center;color:var(--muted);font-size:13px;padding:30px 20px;border-top:1px solid var(--line)}
   .pill{font-size:11px;padding:1px 7px;border-radius:10px;border:1px solid var(--line);color:var(--muted)}
 </style>
@@ -99,6 +102,8 @@
       <div class="con"><b>단점</b> · 추상화가 많아 무겁고 "마법" 같음 · 버전 변화 잦음 · 복잡한 흐름엔 부족</div>
     </div>
     <div class="when">🟡 <b>언제</b>: 여러 데이터·모델을 빠르게 붙여 RAG/프로토타입을 만들 때. "부품을 가져다 조립"이 필요할 때.</div>
+    <div class="scenario"><span class="h">🏢 실무 시나리오 — 사내 문서 Q&amp;A 봇</span>
+      Notion·PDF·사내 위키처럼 흩어진 문서를 각 <b>커넥터로 한 번에 연결</b> → 임베딩 → 벡터스토어 → 검색 → LLM 답변까지 <b>체인 하나</b>로. "여러 소스를 붙여 RAG 챗봇"을 며칠 만에 띄울 때. 부품이 이미 다 있어 <b>조립만</b> 하면 됨.</div>
   </div>
 </section>
 
@@ -123,6 +128,8 @@
       <div class="con"><b>단점</b> · 단순 작업엔 과함 · 상태 타입 검증은 느슨(런타임 자동검증 약함)</div>
     </div>
     <div class="when">🟦 <b>언제</b>: 여러 단계·조건분기·여러 에이전트가 협력하는 <b>복잡한 워크플로우</b>. "흐름 자체가 복잡할 때".</div>
+    <div class="scenario"><span class="h">🏢 실무 시나리오 — 고객 문의 자동 분류·처리</span>
+      문의가 들어오면 ① <b>분류</b> 노드 → ② (환불/기술/일반) <b>분기</b> → ③ 도구로 주문 조회 → ④ 자신 없으면 <b>사람 상담사에게 에스컬레이션</b>(human-in-the-loop) → ⑤ 미해결이면 다시 처리(<b>반복</b>). 분기·도구·사람개입·반복이 한 그래프에 담겨, 흐름이 복잡할수록 빛남.</div>
   </div>
 </section>
 
@@ -153,6 +160,8 @@ print(res.output.intent, res.output.text)  # 검증된 Answer 객체</code></pre
       <div class="con"><b>단점</b> · 신생(인지도 LangGraph보다 낮음) · 초복잡 흐름은 pydantic-graph 필요</div>
     </div>
     <div class="when">🟥 <b>언제</b>: <b>구조화된 결과·타입 안전</b>이 중요하고 흐름은 그리 복잡하지 않을 때. 이미 Pydantic을 쓰는 코드베이스.</div>
+    <div class="scenario"><span class="h">🏢 실무 시나리오 — 비정형 문서에서 구조화 데이터 추출</span>
+      계약서·송장·이력서에서 <b>{금액, 날짜, 당사자, 항목[]}</b> 같은 <b>정해진 스키마</b>로 뽑아 DB에 적재. 형식이 어긋나면 <b>자동 재시도</b>해 파이프라인 신뢰성을 보장. 타입·검증이 생명인 데이터 작업에 적합. <i>(이 프로젝트의 공시 라우터·QA 결과도 Pydantic 스키마라 딱 맞음)</i></div>
   </div>
 </section>
 
@@ -162,6 +171,8 @@ print(res.output.intent, res.output.text)  # 검증된 Answer 객체</code></pre
     <div class="analogy">🎭 <b>비유</b>: 역할극 팀. 에이전트마다 <b>역할(role)·목표(goal)</b>를 주고 <b>crew</b>로 묶어 협업시킨다.</div>
     <p>"리서처 → 작가 → 검수자" 처럼 역할을 나눠 팀으로 일을 시키는 직관적 추상화. 프로토타입을 가장 빨리 만들 수 있다는 게 매력. 다만 <b>세밀한 흐름 제어·관찰·타입 안전은 약하고 의존성이 무겁다</b>. (별도 오케스트레이션 없이 단일 에이전트 래퍼로만 쓰면 "그냥 LLM 호출"과 다를 바 없어져 가치가 떨어짐 — 자주 하는 실수.)</p>
     <div class="when">🟧 <b>언제</b>: 역할 기반 협업 데모를 빠르게 만들 때. 단, 제어가 중요하면 LangGraph/PydanticAI가 낫다.</div>
+    <div class="scenario"><span class="h">🏢 실무 시나리오 — 리서치 리포트 자동 작성</span>
+      <b>리서처</b>(자료 수집) → <b>애널리스트</b>(분석) → <b>작가</b>(초안) → <b>편집자</b>(교정) 에이전트가 역할을 나눠 협업해 시장조사 리포트 한 편을 완성. "팀처럼 일 시키기"가 직관적이라 역할 협업 데모를 가장 빨리 만들 수 있음.</div>
   </div>
 </section>
 
