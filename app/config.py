@@ -45,7 +45,7 @@ class Settings(BaseSettings):
 
     # --- 3-트랙 요약 (사전요약 + RAG) ---
     small_disclosure_chars: int = 12000  # 이하면 '작은 공시' → 원문 통째 요약
-    summary_top_k: int = 4               # 요약 트랙에서 가져올 섹션요약 개수
+    summary_top_k: int = 8               # 요약 트랙에서 가져올 섹션요약 개수(검색 recall 보강)
     min_section_chars: int = 200         # 사전요약 시 이보다 짧은 섹션은 스킵
     # 큰 공시: 잘게 쪼개진 섹션을 ~target_chars 묶음으로 합치고, 묶음 수를 max 로 제한
     # (사업보고서가 수백 개 micro-섹션으로 쪼개져 LLM 호출이 폭증하는 것 방지)
