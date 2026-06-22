@@ -31,6 +31,42 @@ from app.schemas.disclosure import (
 
 # 요약 시 에이전트에 직접 넣어줄 본문 최대 길이 (전체 조망용)
 _MAX_OVERVIEW_CHARS = 12000
+# 사전요약(3-트랙) 1회 호출에 넣을 섹션/원문 최대 길이 (비용·컨텍스트 상한)
+_MAX_SECTION_CHARS = 24000
+
+
+def summarize_text(text: str, label: str = "") -> str:
+    """주어진 본문(섹션 또는 작은 공시 원문)을 간결히 요약. 사전요약용 경량 호출.
+
+    3-트랙 아키텍처에서 적재 시점에 미리 호출해 요약을 만들어 둔다(precompute).
+    구조화 스키마 없이 짧은 한국어 요약 문자열만 돌려준다.
+    """
+    settings = get_settings()
+    body = (text or "").strip()
+    if not body:
+        return ""
+    body = body[:_MAX_SECTION_CHARS]
+    agent = Agent(
+        role="공시 요약 전문가",
+        goal="주어진 공시 본문을 사실 그대로 간결히 요약한다. 추측·과장 없이 핵심 수치·일자·사실 중심.",
+        backstory="너는 금융감독원 전자공시를 오래 분석해 온 애널리스트다. 근거에 없는 내용은 지어내지 않는다.",
+        llm=_llm(settings.litellm_summary_model),
+        verbose=False,
+        allow_delegation=False,
+    )
+    head = f"({label}) " if label else ""
+    task = Task(
+        description=(
+            f"다음 공시 {head}본문을 한국어 3~6문장으로 요약하라. "
+            "근거에 없는 추측·해석은 금지하고, 수치·일자·계약상대방 같은 사실 위주로 적어라.\n\n"
+            "=== 본문 ===\n{body}"
+        ),
+        expected_output="간결한 한국어 요약 (3~6문장)",
+        agent=agent,
+    )
+    crew = Crew(agents=[agent], tasks=[task], process=Process.sequential, verbose=False)
+    result = crew.kickoff(inputs={"body": body})
+    return str(result).strip()
 
 
 def _llm(model: str) -> LLM:

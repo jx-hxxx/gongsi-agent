@@ -260,6 +260,94 @@ class VectorStore:
         got = coll.get(where={"rcept_no": rcept_no}, limit=1)
         return bool(got.get("ids"))
 
+    # ===== 사전요약 컬렉션 (3-트랙 요약: summary_<corp_code>) =====
+    def index_summaries(self, collection_name: str, items: list[dict]) -> int:
+        """섹션/전체 요약을 임베딩해 요약 컬렉션에 저장. items=[{id, text, metadata}]."""
+        items = [it for it in items if (it.get("text") or "").strip()]
+        if not items:
+            return 0
+        coll = self.client.get_or_create_collection(collection_name)
+        embeddings = self.embedder.embed_documents([it["text"] for it in items])
+        coll.add(
+            ids=[it["id"] for it in items],
+            documents=[it["text"] for it in items],
+            embeddings=embeddings,
+            metadatas=[it["metadata"] for it in items],
+        )
+        self._doc_cache.pop(collection_name, None)
+        return len(items)
+
+    def delete_summaries_for(self, collection_name: str, rcept_no: str) -> None:
+        """재생성(idempotent) 전, 해당 공시의 기존 요약 제거."""
+        try:
+            coll = self.client.get_collection(collection_name)
+        except Exception:
+            return
+        try:
+            coll.delete(where={"rcept_no": rcept_no})
+        except Exception:
+            pass
+
+    def search_summaries(
+        self, collection_name: str, query: str, top_k: int | None = None
+    ) -> list[Citation]:
+        """요약 컬렉션에서 질문과 가까운 섹션요약을 Citation 으로 검색(꺼내기만 → 빠름)."""
+        settings = get_settings()
+        k = top_k or settings.summary_top_k
+        try:
+            coll = self.client.get_collection(collection_name)
+        except Exception:
+            return []
+        q_emb = self.embedder.embed_query(query)
+        res = coll.query(
+            query_embeddings=[q_emb], n_results=k,
+            include=["documents", "metadatas", "distances"],
+        )
+        ids = res.get("ids", [[]])[0]
+        docs = res.get("documents", [[]])[0]
+        metas = res.get("metadatas", [[]])[0]
+        dists = res.get("distances", [[]])[0]
+        out: list[Citation] = []
+        for cid, doc, meta, dist in zip(ids, docs, metas, dists):
+            m = meta or {}
+            out.append(
+                Citation(
+                    chunk_id=cid,
+                    section_title=m.get("section_title") or None,
+                    quote=doc,
+                    score=round(1 - float(dist), 4) if dist is not None else None,
+                    rcept_no=m.get("rcept_no") or None,
+                    report_nm=m.get("report_nm") or None,
+                    rcept_dt=m.get("rcept_dt") or None,
+                )
+            )
+        return out
+
+    def has_summaries(self, collection_name: str) -> bool:
+        try:
+            return self.client.get_collection(collection_name).count() > 0
+        except Exception:
+            return False
+
+    def distinct_rcept_nos(self, collection_name: str) -> list[tuple[str, dict]]:
+        """코퍼스 컬렉션에서 (rcept_no, 대표 메타) 목록을 추린다(백필 대상 산출용)."""
+        try:
+            coll = self.client.get_collection(collection_name)
+        except Exception:
+            return []
+        got = coll.get(include=["metadatas"])
+        seen: dict[str, dict] = {}
+        for m in got.get("metadatas", []) or []:
+            rc = (m or {}).get("rcept_no")
+            if rc and rc not in seen:
+                seen[rc] = m
+        return list(seen.items())
+
+
+def summary_collection(corp_code: str) -> str:
+    """사전요약 컬렉션 이름 (corpus_<corp_code> 와 짝)."""
+    return f"summary_{corp_code}"
+
 
 _store: VectorStore | None = None
 

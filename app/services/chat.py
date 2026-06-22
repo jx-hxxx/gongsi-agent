@@ -13,7 +13,7 @@ import datetime
 
 from app.agents import crew
 from app.config import get_settings
-from app.rag.vectorstore import get_vector_store
+from app.rag.vectorstore import get_vector_store, summary_collection
 from app.services import financials, macro
 from app.schemas.disclosure import (
     ChatIntent,
@@ -77,7 +77,11 @@ def handle_turn(req: ChatRequest) -> ChatResponse:
         resp.answer = route.reply or "안녕하세요. 공시에 대해 궁금한 점을 물어봐 주세요."
         return resp
 
-    # 4) qa / summary / macro — 코퍼스 검색 + 근거 기반 답변 + 검증
+    # 4) summary — 사전요약(precompute) 트랙 우선. 없으면 실시간 RAG 로 폴백.
+    if route.intent == ChatIntent.SUMMARY:
+        return _run_summary_turn(req, history, route, resp)
+
+    # 5) qa / macro — 코퍼스 검색 + 근거 기반 답변 + 검증
     return _run_qa_turn(
         req, history,
         macro_relevant=route.macro_relevant,
@@ -152,6 +156,49 @@ def _finalize(req, resp, qa, macro_snapshot) -> str:
     except Exception as e:
         _add_err(resp, f"verification_failed: {type(e).__name__}: {e}")
         return "error"
+
+
+def _run_summary_turn(req, history, route, resp) -> ChatResponse:
+    """요약 트랙: 사전요약(summary_<corp_code>)에서 섹션요약을 꺼내 답을 구성.
+
+    사전요약이 아직 없으면(백필 전) 기존 실시간 RAG 요약으로 폴백 → 항상 동작.
+    """
+    settings = get_settings()
+    store = get_vector_store()
+    coll = summary_collection(req.corp_code)
+    query = (route.search_query or "").strip() or req.question
+
+    summaries = (
+        store.search_summaries(coll, query, top_k=settings.summary_top_k)
+        if store.has_summaries(coll) else []
+    )
+    if not summaries:
+        # 사전요약 없음 → 실시간 RAG 요약으로 폴백(기존 경로 재사용)
+        return _run_qa_turn(
+            req, history,
+            macro_relevant=route.macro_relevant,
+            financial_relevant=route.financial_relevant,
+            search_query=route.search_query,
+            date_from=route.date_from, date_to=route.date_to,
+            prefer_recent=route.prefer_recent, resp=resp,
+        )
+
+    # 사전요약을 근거로 최종 답 구성 (retrieve-then-read: 미리 만든 요약만 읽고 종합)
+    try:
+        qa = crew.run_chat_qa(req.question, summaries, history=history)
+    except Exception as e:
+        resp.answer = "일시적인 오류로 요약을 생성하지 못했습니다. 다시 시도해 주세요."
+        _add_err(resp, f"summary_failed: {type(e).__name__}: {e}")
+        return resp
+
+    if qa.needs_clarification:
+        resp.needs_clarification = True
+        resp.answer = qa.answer
+        resp.citations = qa.citations
+        return resp
+
+    _finalize(req, resp, qa, None)
+    return resp
 
 
 def _run_qa_turn(

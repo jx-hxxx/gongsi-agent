@@ -68,7 +68,7 @@ def corpus_collection(corp_code: str) -> str:
     return f"corpus_{corp_code}"
 
 
-def run(bgn: str, end: str, dry_run: bool) -> None:
+def run(bgn: str, end: str, dry_run: bool, build_summaries: bool = False) -> None:
     settings = get_settings()
     store = None if dry_run else get_vector_store()
 
@@ -116,7 +116,14 @@ def run(bgn: str, end: str, dry_run: bool) -> None:
                 n = store.index_corpus_disclosure(coll, rcept, chunks, base_meta)
                 total_chunks += n
                 done += 1
-                print(f"  [{i}/{len(targets)}] {t['report_nm'].strip()[:30]} → {n}청크 (누적 {total_chunks})")
+                msg = f"  [{i}/{len(targets)}] {t['report_nm'].strip()[:30]} → {n}청크 (누적 {total_chunks})"
+                if build_summaries:
+                    from app.services import summarize
+                    ns = summarize.build_and_store(
+                        corp, name, rcept, t["report_nm"].strip(), t["rcept_dt"], text
+                    )
+                    msg += f" / 요약 {ns}개"
+                print(msg)
             except Exception as e:
                 print(f"  [{i}/{len(targets)}] 실패 {rcept}: {e}")
         print(f"  ✅ {name}: 신규 {done}건 / 스킵 {skipped}건 / 총 {total_chunks}청크 (collection={coll})")
@@ -130,5 +137,6 @@ if __name__ == "__main__":
     ap.add_argument("--bgn", default="20230616")
     ap.add_argument("--end", default="20260616")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--summaries", action="store_true", help="적재와 함께 사전요약(3-트랙) 생성")
     args = ap.parse_args()
-    run(args.bgn, args.end, args.dry_run)
+    run(args.bgn, args.end, args.dry_run, build_summaries=args.summaries)

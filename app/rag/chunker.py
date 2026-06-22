@@ -37,6 +37,31 @@ def _looks_like_section(line: str) -> bool:
     return bool(_SECTION_RE.match(line))
 
 
+def split_into_sections(text: str) -> list[tuple[str | None, str]]:
+    """원문을 섹션 경계로만 분할한다(슬라이딩 윈도우 없음 → 오버랩 중복 없는 깨끗한 본문).
+
+    사전요약(3-트랙)에서 '목차(섹션)별 요약'을 만들 때 쓴다.
+    반환: [(section_title, body), ...] (빈 body 제외)
+    """
+    text = _normalize(text)
+    if not text:
+        return []
+    blocks: list[tuple[str | None, str]] = []
+    current_title: str | None = None
+    buffer: list[str] = []
+    for line in text.split("\n"):
+        if _looks_like_section(line):
+            if buffer:
+                blocks.append((current_title, "\n".join(buffer).strip()))
+                buffer = []
+            current_title = line.strip()
+        else:
+            buffer.append(line)
+    if buffer:
+        blocks.append((current_title, "\n".join(buffer).strip()))
+    return [(t, b) for t, b in blocks if b]
+
+
 def split_into_chunks(
     text: str,
     *,
