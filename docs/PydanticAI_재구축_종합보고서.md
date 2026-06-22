@@ -11,7 +11,7 @@
 - **PydanticAI 채택** — 코드가 이미 Pydantic-native라 현 CrewAI 단일-래퍼를 **가장 적은 변경 + 경량 + 타입세이프**로 대체.
 - **"기존 함수 1:1 교환"은 PydanticAI 철학에 어긋나지 않는다.** 단 "매 호출 재생성" 같은 안티패턴은 버리고 **모듈-레벨 에이전트 + deps 주입 + retrieve-then-read** 관용구로.
 - **인제스트 재설계가 핵심**: 표-인식 파싱 → 청킹 → **Contextual 문맥 주입(필수)** → 메타 태깅 → 임베딩.
-- **새 디렉토리(`gongsi-agent-v2`)에서 클린 재구축** 권장(기존 보존). 재적재 예정이라 데이터 복사 불필요.
+- **새 디렉토리(`gongsitoktok-pydantic`)에서 클린 재구축** 권장(기존 보존). 재적재 예정이라 데이터 복사 불필요.
 
 ---
 
@@ -189,13 +189,14 @@ flowchart TD
 ---
 
 ## 5. 새 디렉토리에서 재구축 (권장: 예)
-- **권장: 새 레포/디렉토리 `gongsi-agent-v2`에서 클린 재구축.** 기존은 보존(레퍼런스·롤백·안전한 시연).
+- **권장: 새 레포/디렉토리 `gongsitoktok-pydantic`에서 클린 재구축.** 기존은 보존(레퍼런스·롤백·안전한 시연).
 - **데이터**: Contextual+새 청킹으로 **전면 재적재 예정 → 기존 Chroma 복사 불필요.** `.env`·`corpcode.json` 캐시·인제스트 스크립트만 재사용, 공시 원문은 무료 재취득(같은 회사: 삼성·현대).
-- **이점**: 프레임워크 swap+재적재 대수술을 안정 버전과 분리. 포트폴리오상 "v2 클린 설계" 서사.
+- **골든셋 포팅**: 기존 `gongsi-agent/eval/`의 **`chat_golden_set.json`(14케이스)·`run_chat_golden.py`·`CHAT_GOLDEN_README.md`** 를 그대로 가져와 회귀 검증에 재사용(숫자 기대값만 새 적재 기준 점검).
+- **이점**: 프레임워크 swap+재적재 대수술을 안정 버전과 분리. 포트폴리오상 "클린 설계" 서사.
 
 ### 제안 디렉토리 구조
 ```
-gongsi-agent-v2/
+gongsitoktok-pydantic/
   app/
     ingest/      # 표파싱·청킹·contextual·임베딩(인제스트 파이프라인)
     rag/         # 벡터+BM25 하이브리드·리랭킹
@@ -218,6 +219,17 @@ gongsi-agent-v2/
 | **합계** | **코드작업 며칠 + 앱 OpenAI ~$10~$35** | (Contextual 범위가 변수) |
 - 앱 OpenAI 소모는 프레임워크 무관. PydanticAI는 CrewAI 대비 코드·의존성 경량.
 
+### 6-1. 병행 착수 순서 (권장)
+재적재(길고 비쌈)와 코드작업을 **파이프라이닝**한다. 단 설계는 샘플로 먼저 확정.
+```
+1) [포그라운드·저비용] 청크/Contextual 설계 + 1건 샘플 검증 → 메타 스키마·컬렉션명·문맥 형식 "확정"
+2) [백그라운드·김]     확정 설계로 전체 재적재 (표파싱→청킹→Contextual→임베딩, 정기보고서 우선)
+3) [포그라운드·병렬]   그동안 PydanticAI 에이전트·오케스트레이션 코드 작성 (vectorstore 인터페이스에만 의존)
+4) 재적재 완료 → 골든셋 통합 검증
+```
+- 핵심: **설계 확정(샘플) 후 풀 재적재는 1회만.** 스키마 안 굳히고 풀로 돌리면 변경 시 재적재 반복(비용 낭비).
+- 코드는 데이터 완성 전에도 작성·테스트 가능(샘플/기존 코퍼스 활용) → 병렬 OK.
+
 ---
 
 ## 7. 검증 / RFP 시연
@@ -232,3 +244,22 @@ gongsi-agent-v2/
 - Contextual Retrieval: [Anthropic](https://www.anthropic.com/news/contextual-retrieval)
 - 표/XBRL·금융 RAG: [Daloopa](https://daloopa.com/blog/analyst-best-practices/rag-systems-for-financial-tables-enhancing-excel-data-with-ai-context), [FinSage(arXiv 2504.14493)](https://arxiv.org/pdf/2504.14493)
 - 내부 문서: `공시분석_production_아키텍처.md`, `production전환_개발계획.md`, `에이전트_프레임워크_입문.html`
+
+---
+
+## 9. 다음 세션 착수 가이드 (핸드오프)
+> 새 세션/새 폴더에서 이어받기 위한 요약. (컨텍스트 정리용)
+
+- **목표**: `gongsitoktok-fastapi/gongsi-agent`(현재, dev 브랜치)를 참고삼아, **새 디렉토리 `gongsitoktok-pydantic`** 에 PydanticAI 기반으로 클린 재구축.
+- **결정 사항(확정)**:
+  - 프레임워크 = **PydanticAI**(이유: §2·§3). 흐름은 현재와 유사하되 구현·품질 교체(§4-2-5).
+  - 인제스트 = **표-인식 파싱 + Contextual 문맥 주입 + 메타 태깅**(§4-1). 정기보고서 우선.
+  - 모델 = router `gpt-4o-mini` / 사전요약 `gpt-4o-mini` / writer `gpt-5.1` / verifier `o4-mini`(샘플링)(§4-2-1b).
+  - 챗봇 유지하되 RFP 과제형(요약·근거·보관·조회) 1급(§1).
+- **착수 순서**: §6-1 (샘플 검증 → 백그라운드 풀 재적재 → 병렬 코드 → 골든셋 검증).
+- **재사용 자산**: `gongsi-agent/eval/`의 골든셋 3종, `.env`·`corpcode.json`, OpenDART/ECOS 수집 로직. (Chroma 데이터는 재적재라 불필요)
+- **데이터 범위**: 삼성전자(00126380)·현대자동차(00164742) 정기보고서 33건.
+- **비용 가드**: 풀 재적재 전 1건 샘플로 설계 확정. Contextual은 정기보고서부터(전면은 ~$20+).
+- **참고 문서**(이 repo `docs/`): 본 보고서 + `공시분석_production_아키텍처.md`(파이프라인 상세·용어·시나리오) + `현업대비_개선전략.md`(Gap) + `에이전트_프레임워크_입문.html`.
+
+> 새 세션 첫 작업 제안: `gongsitoktok-pydantic` 스캐폴딩 + 청크/Contextual 설계 1건 샘플 검증(저비용)부터.
