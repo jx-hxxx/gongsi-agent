@@ -46,16 +46,54 @@ flowchart TD
     GEN --> VER["⑦ 검증 · 근거추적<br/>(provenance · 환각 억제)"]
 ```
 
-### 단계별 핵심
-1. **수집(Ingestion)**: 공시·전사록·리서치를 대규모·준실시간으로 인덱싱(AlphaSense는 연 수백만 문서, 500M+ 코퍼스).
-2. **파싱(Parsing) — 공시에서 가장 어려운 단계**: 텍스트/표/차트를 **구조 보존**하며 분리. 딥러닝 기반 파서로 표·차트까지 추출. *일반 문서 RAG와 결정적 차이.*
-3. **청킹(Chunking)**: 단순 글자수 분할이 아니라 **표-인식 청킹 + 메타데이터(회사·기간·섹션·공시유형) 태깅**. 흔히 **Contextual Retrieval**(임베딩 전 각 청크에 "이건 ACME Q2 공시의 매출 부분" 같은 문맥을 prepend)로 검색 정밀도 +5~15%p.
-4. **이중 인덱스**: **의미 검색(임베딩)** + **키워드/BM25(티커·정확 수치)** 하이브리드. 정형(XBRL)·표는 정확매칭 경로로.
-5. **검색(Retrieval)**: 하이브리드 → **리랭킹**, 메타필터. 복잡 질문은 **에이전트가 분해**(plan→retrieve→analyze)해 다단계로.
-6. **생성(Generation)**: **검색된 근거 안에서만** 답(accuracy-first), **표/숫자 추론**, **인라인 인용**.
-7. **검증(Verification)**: 출처로 되짚기(auditable provenance), 환각 억제 — 금융권 필수.
+### 단계별 핵심 (상세)
 
-출처: [AlphaSense(IntuitionLabs)](https://intuitionlabs.ai/articles/alphasense-platform-review), [Anthropic Contextual Retrieval](https://www.anthropic.com/news/contextual-retrieval), [Document Parsing for Production RAG(Medium)](https://medium.com/@manikandan_t/document-parsing-for-production-rag-architecture-tradeoffs-and-when-to-use-what-7a89ab0af7b7)
+**① 수집(Ingestion)** — 분석할 문서를 모아 시스템에 넣는 단계.
+- 공시·실적 전사록(콜 스크립트)·리서치 리포트 등을 **준실시간**으로 가져와 저장. AlphaSense는 500M+ 문서 규모.
+- 쉽게: "도서관에 책을 계속 들여놓는 단계."
+
+**② 파싱(Parsing)** — 원문을 기계가 다룰 수 있게 **구조를 살려 분해**. *공시에서 가장 어려운 단계.*
+- HTML/PDF 원문에서 **텍스트 / 표(table) / 차트(그림)** 를 구분해 뽑아냄. 표는 행·열·병합셀을 보존해야 숫자가 안 망가짐.
+- 쉽게: "책을 글 문단·표·그림으로 나눠 각각 알맞게 처리." (우리 프로젝트는 이걸 안 하고 전부 글자로 뭉갬 → 표 손실)
+
+**③ 청킹(Chunking)** — 긴 문서를 검색·요약하기 좋은 **작은 조각(chunk)** 으로 자르고 꼬리표(메타데이터)를 붙임.
+- 단순 글자수 자르기가 아니라 **표-인식 청킹**(표는 표 단위로) + **메타데이터 태깅**(회사·기간·섹션·공시유형 같은 꼬리표).
+- **Contextual Retrieval**: 조각을 임베딩하기 전에 "이건 ACME Q2 공시의 매출 부분" 같은 **문맥 한 줄을 앞에 붙이는** 기법(Anthropic 제안). 조각이 어디서 왔는지 알려줘 검색 정밀도 +5~15%p.
+- 쉽게: "책을 색인 카드로 자르되, 카드마다 '몇 장 무슨 절' 라벨을 붙인다."
+
+**④ 인덱싱(Indexing)** — 잘게 나눈 조각을 **검색 가능한 형태**로 저장. 두 방식을 같이 씀(**하이브리드**).
+- **벡터(임베딩) 검색 = 의미 검색**: 글을 숫자 벡터로 바꿔 *뜻이 비슷한 것*을 찾음. "사업 내용" 같은 **개념** 질문에 강함.
+- **BM25 = 키워드 검색**: 단어가 *글자 그대로 얼마나 잘 맞는지*로 순위를 매기는 고전 알고리즘(검색엔진의 표준). 티커·정확한 숫자·고유명사 같은 **정확 일치**에 강함.
+- 쉽게: 벡터검색="뜻으로 찾기", BM25="단어로 찾기". 공시는 둘 다 필요(개념+정확수치) → **하이브리드**.
+
+**⑤ 검색(Retrieval)** — 질문이 오면 근거 조각을 꺼내옴.
+- 하이브리드(벡터+BM25)로 후보를 모은 뒤 **리랭킹(re-ranking)** = 후보들을 *질문에 더 잘 맞는 순서로 다시 정렬*(보통 정밀한 별도 모델로). + **메타필터**(예: 특정 회사·기간만).
+- 복잡한 질문은 **에이전트가 쿼리를 분해**(plan→retrieve→analyze): 큰 질문을 작은 검색 여러 개로 쪼개 각각 찾고 합침.
+- 쉽게: "관련 카드를 잔뜩 꺼낸 뒤(검색), 가장 알맞은 순서로 추려서(리랭킹) 본다."
+
+**⑥ 생성(Generation)** — 꺼낸 근거로 답을 만든다.
+- **검색된 근거 안에서만** 답(accuracy-first → 환각↓), **표/숫자 추론**, **인라인 인용**(답에 출처를 바로 표시).
+
+**⑦ 검증(Verification)** — 답이 근거에 충실한지 점검.
+- **근거추적(provenance)** = 답의 각 주장이 *어느 원문에서 왔는지 되짚기*. 환각 억제·감사가능성 → 금융권 필수.
+
+> 출처: [AlphaSense(IntuitionLabs)](https://intuitionlabs.ai/articles/alphasense-platform-review), [Anthropic Contextual Retrieval](https://www.anthropic.com/news/contextual-retrieval), [Document Parsing for Production RAG(Medium)](https://medium.com/@manikandan_t/document-parsing-for-production-rag-architecture-tradeoffs-and-when-to-use-what-7a89ab0af7b7)
+
+### 용어 한눈에 (Glossary)
+
+| 용어 | 쉬운 뜻 | 강점/용도 |
+|---|---|---|
+| **청킹(Chunking)** | 긴 문서를 작은 조각으로 자름 | 검색·요약 단위 만들기 |
+| **메타데이터 태깅** | 조각에 회사·기간·섹션 등 꼬리표 부착 | 필터·랭킹 정확도 |
+| **임베딩/벡터 검색** | 글을 숫자벡터로 바꿔 '뜻'으로 찾기 | 개념·서술 질문 |
+| **BM25** | 단어 일치도로 순위 매기는 키워드 검색(고전 표준) | 티커·정확 수치·고유명사 |
+| **하이브리드 검색** | 벡터(뜻) + BM25(단어)를 함께 | 둘의 강점 결합 |
+| **리랭킹(Re-ranking)** | 검색 후보를 더 정밀히 재정렬 | 상위 정확도↑ |
+| **Contextual Retrieval** | 조각에 출처 문맥을 한 줄 붙여 임베딩 | 검색 정밀도↑(Anthropic) |
+| **RAG** | 검색해서 찾은 근거로 LLM이 답(검색증강생성) | 환각↓·근거 기반 |
+| **XBRL** | 재무제표를 기계가 읽는 표준 태그 형식 | 정형 재무 데이터 |
+| **에이전트(Agent)** | 작업을 단계로 나눠 스스로 수행하는 LLM | 복잡 질문 분해·다단계 |
+| **provenance(근거추적)** | 답이 어느 원문에서 왔는지 되짚기 | 검증·감사 |
 
 ---
 
@@ -105,7 +143,55 @@ flowchart TD
 
 ---
 
-## 6. 핵심 출처 모음
+## 6. 시나리오로 보는 파이프라인 (예시)
+
+같은 시스템이라도 **질문 종류에 따라 파이프라인의 다른 부분이 주역**이 된다. 4가지 예시로 본다.
+
+### 시나리오 A — "삼성전자 작년 영업이익 얼마야?" (정확 수치)
+```mermaid
+flowchart LR
+    Q["영업이익 얼마?"] --> R["검색: BM25(키워드) 강세<br/>+ XBRL/표 정확매칭"]
+    R --> G["근거內 생성 + 인용<br/>43,601,051백만원"]
+```
+- **주역**: BM25 + 표/XBRL. 숫자·고유명사는 *단어 정확 일치*가 중요해 벡터(뜻) 검색만으론 부족.
+- **표-인식이 없으면?** 표가 plaintext로 뭉개져 엉뚱한 숫자를 집거나 놓침. → 우리 프로젝트의 약점(G1).
+
+### 시나리오 B — "삼성전자 사업 내용 요약해줘" (서술/개념)
+```mermaid
+flowchart LR
+    Q["사업 요약"] --> R["검색: 벡터(의미) 강세<br/>+ 사전요약 인덱스"]
+    R --> G["서술 요약 답변"]
+```
+- **주역**: 벡터(의미) 검색 + 사전요약(precompute). '사업 내용'이라는 *개념*에 가까운 조각을 찾음.
+- 정확 수치가 굳이 필요 없으니 **싼 모델 사전요약으로 충분**(우리 프로젝트가 이미 적용).
+
+### 시나리오 C — "지역별 매출 알려줘" (표가 핵심)
+```mermaid
+flowchart LR
+    Q["지역별 매출"] --> P{"표-인식 파싱?"}
+    P -->|있음(현업)| OK["표 구조 보존<br/>→ 지역×매출 정확"]
+    P -->|없음(현재 우리)| BAD["plaintext로 뭉갬<br/>→ 행/열 깨짐·부정확"]
+```
+- **주역**: 파싱(②)·표-인식 청킹(③). 표는 행·열 의미가 살아야 "지역별"이 성립.
+- 현업은 표를 표로 다루지만, **우리는 plaintext라 이 질문이 취약**. → 개선책 ③(표 블록 분리)·①(풀 파서)의 동기.
+
+### 시나리오 D — "최근 공시 중 리스크 요인과 그게 실적에 준 영향은?" (복합)
+```mermaid
+flowchart TD
+    Q["리스크 + 실적 영향"] --> AG["에이전트 쿼리 분해"]
+    AG --> S1["검색1: 위험요소 섹션"]
+    AG --> S2["검색2: 실적/MD&A"]
+    S1 --> SYN["종합 + 인용"]
+    S2 --> SYN
+```
+- **주역**: 에이전트 쿼리 분해(⑤). 한 번의 검색으론 두 주제를 다 못 담아 **여러 검색으로 쪼갠 뒤 합침**.
+- 단일 라우팅만 있는 **우리 프로젝트는 이런 복합/혼합 질문에 약함**(G6). → 개선책 ②의 '하이브리드 트랙', ①의 '에이전트 분해'가 이를 겨냥.
+
+> 정리: **A=BM25·표 / B=벡터·요약 / C=표-인식 파싱 / D=에이전트 분해.** 좋은 공시분석 시스템은 이 네 상황을 *모두* 잘 처리하도록 파이프라인 각 단계를 갖춘다.
+
+---
+
+## 7. 핵심 출처 모음
 - AlphaSense: [작동방식(IntuitionLabs)](https://intuitionlabs.ai/articles/alphasense-platform-review), [Generative AI for Investment Research](https://www.alpha-sense.com/solutions/generative-ai-investment-research/)
 - Hebbia: [Matrix 소개](https://www.hebbia.com/blog/introducing-matrix-the-interface-to-agi), [멀티에이전트 재설계](https://www.hebbia.com/blog/divide-and-conquer-hebbias-multi-agent-redesign)
 - 금융 RAG 연구: [MimirRAG(2605.25030)](https://arxiv.org/html/2605.25030v1), [FinSage(2504.14493)](https://arxiv.org/pdf/2504.14493), [한국 KOSPI50 LLM 공시 모니터링(2309.00208)](https://arxiv.org/pdf/2309.00208)
