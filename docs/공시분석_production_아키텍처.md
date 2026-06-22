@@ -191,7 +191,48 @@ flowchart TD
 
 ---
 
-## 7. 핵심 출처 모음
+## 7. 사전요약은 "무엇을" 뽑나 — Takeaway 선정 · 토픽 추출
+
+> §2의 점선 노드 **사전요약(precompute / Smart Summary)** 이 실제로 *무엇을 핵심으로 골라* 요약하는지의 방법론.
+> 배경: 질문마다 매번 요약하면 느리고 비싸므로 **적재 때 미리 요약해 저장 → 질문 시 꺼내 쓰는** 효율화 기법. "효율적 업무처리를 위해 미리 요약해 활용"이 바로 이것. 사례: AlphaSense Smart Summary, [LlamaIndex Document Summary Index](https://www.llamaindex.ai/blog/a-new-document-summary-index-for-llm-powered-qa-systems-9a32ece2f9ec), 본 프로젝트 `summary_*`.
+
+요약의 품질은 **① 무슨 주제인지(토픽 추출) ② 그중 무엇이 중요한지(takeaway 선정)** 를 얼마나 잘 잡느냐로 갈린다.
+
+### 7-1. 토픽 추출 — "이 문서가 무슨 주제들인가"
+| 방식 | 어떻게 | 특징 |
+|---|---|---|
+| **택소노미 + 분류기**(지도) | 미리 정의한 주제 체계(가이던스·CapEx·M&A·소송 등)에 ML 분류기·NER로 태깅 | 일관·감사가능·확장. **AlphaSense "Company Topics"** |
+| **비지도 토픽모델링** | **BERTopic**(임베딩→UMAP→HDBSCAN 군집→c-TF-IDF 라벨), 구식 LDA | 주제 수 미지정 가능, 신규 주제 발견 |
+| **LLM 기반/하이브리드** | LLM이 직접 토픽 추출·라벨, 또는 BERTopic+LLM(라벨·중복병합) | 유연·고품질, 비용↑ |
+| **도메인 모델** | FinBERT/FinBERT2로 금융 뉘앙스 포착 | 금융 특화 |
+
+### 7-2. Takeaway 선정 — "그중 무엇이 중요한가"
+| 방식 | 무엇을 "중요"로 보나 | 비고 |
+|---|---|---|
+| **추출적 salience** | 문장 그래프 중심성(TextRank/LexRank)으로 대표 문장 | 원문 그대로 → 투명·환각 없음 |
+| **추상적/LLM** | LLM이 핵심 takeaway 생성(프롬프트·few-shot) | 읽기 쉬움, 환각 위험 |
+| **감성·톤 신호** | 감성 강함/톤 변화 큰 부분 | AlphaSense 감성모델(10년 라벨 실적콜) |
+| **이벤트 트리거** | 가이던스·CapEx·M&A·소송·경영진 변경 등 material 키워드 | 이벤트 드리븐 |
+| **변화/신규성 탐지** | 직전 공시 대비 바뀐/새로 추가된 내용 | 신규 위험요소·가이던스 변경 |
+| **질문 주도(query-driven)** | 표준 애널리스트 질문에 답을 추출 | AlphaSense Generative Grid, Hebbia 분해 |
+| **섹션 가중** | MD&A·위험요소·주석 우선 | 애널리스트 휴리스틱 |
+
+### 7-3. 두 가지 철학
+- **지도/택소노미형**(AlphaSense): 정해진 주제 체계 + 분류기 + 감성 + 이벤트 키워드 → 결정적·감사가능·대규모.
+- **생성/질문주도형**(Hebbia·Grid): LLM이 질문을 분해해 그때그때 takeaway 추출 → 유연.
+- 실무는 보통 **둘을 혼합 + 도메인모델 + 근거추적(provenance)**.
+
+### 7-4. 본 프로젝트와의 차이 (Gap)
+우리 사전요약은 **takeaway 선정 로직이 사실상 없음** — 목차 묶음을 *균일하게* 요약할 뿐, 중요도 가중(salience·감성·이벤트·변화)·토픽 태깅이 없다. 끌어올리는 단계(난이도순):
+1. **(저비용)** 요약 프롬프트에 "핵심 takeaway·주요 토픽 위주" 지시 + 섹션 가중(MD&A·위험요소 우선).
+2. **(중간)** 토픽 태깅(택소노미 분류 또는 BERTopic)으로 묶음에 주제 라벨 → 검색·필터 강화(묶음 제목 깨짐도 해결).
+3. **(고급)** 변화 탐지(직전 정기보고서 대비 새 위험·가이던스 변경) + 이벤트 트리거로 "이번 공시의 진짜 새 소식"을 takeaway로.
+
+> 출처: [Extractive vs abstractive·ECT-SKIE(ScienceDirect)](https://www.sciencedirect.com/science/article/abs/pii/S0306457324003571), [Agentic Retrieval of Topics & Insights(arXiv 2507.07906)](https://arxiv.org/pdf/2507.07906), [Modeling analysts via earnings calls(arXiv 1906.02868)](https://arxiv.org/pdf/1906.02868), [BERTopic](https://maartengr.github.io/BERTopic/getting_started/representation/llm.html), [LLM 토픽모델링(arXiv 2403.16248)](https://arxiv.org/pdf/2403.16248), [FinBERT2(arXiv 2506.06335)](https://arxiv.org/pdf/2506.06335)
+
+---
+
+## 8. 핵심 출처 모음
 - AlphaSense: [작동방식(IntuitionLabs)](https://intuitionlabs.ai/articles/alphasense-platform-review), [Generative AI for Investment Research](https://www.alpha-sense.com/solutions/generative-ai-investment-research/)
 - Hebbia: [Matrix 소개](https://www.hebbia.com/blog/introducing-matrix-the-interface-to-agi), [멀티에이전트 재설계](https://www.hebbia.com/blog/divide-and-conquer-hebbias-multi-agent-redesign)
 - 금융 RAG 연구: [MimirRAG(2605.25030)](https://arxiv.org/html/2605.25030v1), [FinSage(2504.14493)](https://arxiv.org/pdf/2504.14493), [한국 KOSPI50 LLM 공시 모니터링(2309.00208)](https://arxiv.org/pdf/2309.00208)
