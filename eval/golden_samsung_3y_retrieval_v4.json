@@ -1,0 +1,1021 @@
+[
+  {
+    "id": "SS_2023_001",
+    "corp_name": "삼성전자",
+    "report_year": "2023",
+    "report_group": "annual",
+    "question": "삼성전자 2023 사업보고서 기준 보통주 발행주식총수는 몇 주인가요?",
+    "expected_terms": [
+      "보통주",
+      "발행주식총수"
+    ],
+    "expected_chunk_ids": [
+      "20240312000736-c-0079",
+      "20240312000736-c-0876"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "5,969,782,550주",
+    "last_qa_answer": "5,969,782,550주",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2023_002",
+    "corp_name": "삼성전자",
+    "report_year": "2023",
+    "report_group": "annual",
+    "question": "삼성전자 2023 사업보고서 기준 우선주 발행주식총수는 몇 주인가요?",
+    "expected_terms": [
+      "우선주",
+      "발행주식총수"
+    ],
+    "expected_chunk_ids": [
+      "20240312000736-c-0080",
+      "20240312000736-c-0876",
+      "20240312000736-c-0875"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "822,886,700주",
+    "last_qa_answer": "822,886,700주",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2023_003",
+    "corp_name": "삼성전자",
+    "report_year": "2023",
+    "report_group": "annual",
+    "question": "삼성전자 2023 사업보고서 기준 보통주 유통주식수는 몇 주인가요?",
+    "expected_terms": [
+      "보통주",
+      "유통주식수"
+    ],
+    "expected_chunk_ids": [
+      "20240312000736-c-0083",
+      "20240312000736-c-3131"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "5,969,782,550주",
+    "last_qa_answer": "5,969,782,550주",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2023_004",
+    "corp_name": "삼성전자",
+    "report_year": "2023",
+    "report_group": "annual",
+    "question": "삼성전자 2023 사업보고서 기준 우선주 유통주식수는 몇 주인가요?",
+    "expected_terms": [
+      "우선주",
+      "유통주식수"
+    ],
+    "expected_chunk_ids": [
+      "20240312000736-c-0083",
+      "20240312000736-c-3131"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "822,886,700주",
+    "last_qa_answer": "822,886,700주",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2023_005",
+    "corp_name": "삼성전자",
+    "report_year": "2023",
+    "report_group": "annual",
+    "question": "삼성전자 2023 사업보고서 기준 연결대상 종속기업은 몇 개사인가요?",
+    "expected_terms": [
+      "연결대상",
+      "종속기업"
+    ],
+    "expected_chunk_ids": [
+      "20240312000736-c-0065",
+      "20240312000736-c-2364",
+      "20240312000736-c-3009"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "삼성전자의 연결대상 종속기업은 2023년말 현재 232개사입니다.",
+    "last_qa_answer": "삼성전자의 연결대상 종속기업은 2023년말 현재 232개사입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2023_006",
+    "corp_name": "삼성전자",
+    "report_year": "2023",
+    "report_group": "annual",
+    "question": "삼성전자 2023 사업보고서 기준 관계기업과 공동기업은 몇 개인가요?",
+    "expected_terms": [
+      "관계기업",
+      "공동기업"
+    ],
+    "expected_chunk_ids": [
+      "20240312000736-c-0212",
+      "20240312000736-c-3009"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "삼성전기㈜ 등 37개 관계기업과 공동기업을 지분법적용대상으로 하였습니다.",
+    "last_qa_answer": "삼성전기㈜ 등 37개 관계기업과 공동기업을 지분법적용대상으로 하였습니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2023_007",
+    "corp_name": "삼성전자",
+    "report_year": "2023",
+    "report_group": "annual",
+    "question": "삼성전자 2023 사업보고서 기준 주요 사업부문은 어떻게 구분되나요?",
+    "expected_terms": [
+      "사업부문"
+    ],
+    "expected_chunk_ids": [
+      "20240312000736-c-0061",
+      "20240312000736-c-0112"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2_plus_manual_valid_top1_chunks_v4",
+    "expected_answer": "공시에 따르면, 삼성전자는 2023년 기준 주요 사업부문을 다음과 같이 구분하고 있습니다.\n\n- DX(Device eXperience) 부문\n- DS(Device Solutions) 부문\n- 패널 사업을 영위하는 SDC(삼성디스플레이㈜ 및 그 종속기업)\n- 전장부품사업 등을 영위하는 Harman(Harman International Industries, Inc. 및 그 종속기업)\n\n또한 공시는 “당사는 제품의 특성에 따라 DX(Device eXperience), DS(Device Solutions) 2개의 부문과 패널 사업을 영위하는 SDC(삼성디스플레이㈜ 및 그 종속기업), 전장부품사업 등을 영위하는 Harman(Harman International Industries, Inc. 및 그 종속기업)으로 나누어 경영을 하고 있습니다.”라고 명시하고 있어, 위 네 개로 주요 사업부문이 구분됨을 확인할 수 있습니다.",
+    "last_qa_answer": "공시에 따르면, 삼성전자는 2023년 기준 주요 사업부문을 다음과 같이 구분하고 있습니다.\n\n- DX(Device eXperience) 부문\n- DS(Device Solutions) 부문\n- 패널 사업을 영위하는 SDC(삼성디스플레이㈜ 및 그 종속기업)\n- 전장부품사업 등을 영위하는 Harman(Harman International Industries, Inc. 및 그 종속기업)\n\n또한 공시는 “당사는 제품의 특성에 따라 DX(Device eXperience), DS(Device Solutions) 2개의 부문과 패널 사업을 영위하는 SDC(삼성디스플레이㈜ 및 그 종속기업), 전장부품사업 등을 영위하는 Harman(Harman International Industries, Inc. 및 그 종속기업)으로 나누어 경영을 하고 있습니다.”라고 명시하고 있어, 위 네 개로 주요 사업부문이 구분됨을 확인할 수 있습니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2023_008",
+    "corp_name": "삼성전자",
+    "report_year": "2023",
+    "report_group": "annual",
+    "question": "삼성전자 2023 사업보고서 기준 DX 부문의 주요 제품은 무엇인가요?",
+    "expected_terms": [
+      "DX",
+      "주요 제품"
+    ],
+    "expected_chunk_ids": [
+      "20240312000736-c-0061",
+      "20240312000736-c-0112"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "공시에 따르면 2023년 기준 삼성전자 DX(Device eXperience) 부문의 주요 제품은 \"TV, 모니터, 냉장고, 세탁기, 에어컨, 스마트폰, 네트워크시스템, 컴퓨터 등\"입니다.",
+    "last_qa_answer": "공시에 따르면 2023년 기준 삼성전자 DX(Device eXperience) 부문의 주요 제품은 \"TV, 모니터, 냉장고, 세탁기, 에어컨, 스마트폰, 네트워크시스템, 컴퓨터 등\"입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2023_009",
+    "corp_name": "삼성전자",
+    "report_year": "2023",
+    "report_group": "annual",
+    "question": "삼성전자 2023 사업보고서 기준 DS 부문의 주요 제품은 무엇인가요?",
+    "expected_terms": [
+      "DS",
+      "주요 제품"
+    ],
+    "expected_chunk_ids": [
+      "20240312000736-c-0061",
+      "20240312000736-c-0112"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "공시에 따르면 DS(Device Solutions) 부문의 주요 제품은 “DRAM, NAND Flash, 모바일AP 등”입니다.",
+    "last_qa_answer": "공시에 따르면 DS(Device Solutions) 부문의 주요 제품은 “DRAM, NAND Flash, 모바일AP 등”입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2023_010",
+    "corp_name": "삼성전자",
+    "report_year": "2023",
+    "report_group": "annual",
+    "question": "삼성전자 2023 사업보고서 기준 연구개발비는 얼마인가요?",
+    "expected_terms": [
+      "연구개발비"
+    ],
+    "expected_chunk_ids": [
+      "20240312000736-c-0152"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "삼성전자 2023년(제55기) 연구개발비(비용)는 28조 3,397억원, 정확한 공시 수치는 28,339,724백만원입니다.",
+    "last_qa_answer": "삼성전자 2023년(제55기) 연구개발비(비용)는 28조 3,397억원, 정확한 공시 수치는 28,339,724백만원입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2023_011",
+    "corp_name": "삼성전자",
+    "report_year": "2023",
+    "report_group": "annual",
+    "question": "삼성전자 2023 사업보고서의 이익잉여금처분계산서에서 제55기 배당금은 얼마인가요?",
+    "expected_terms": [
+      "이익잉여금처분액",
+      "배당금",
+      "2,452,976"
+    ],
+    "expected_answer": "2,452,976백만원",
+    "note": "기존 '배당금총액'은 원문 표현과 어긋나므로 이익잉여금처분계산서의 배당금으로 좁힘",
+    "expected_chunk_ids": [
+      "20240312000736-c-2756"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "last_qa_answer": "제55기 배당금은 2,452,976백만원입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2023_012",
+    "corp_name": "삼성전자",
+    "report_year": "2023",
+    "report_group": "annual",
+    "question": "삼성전자 2023 사업보고서 기준 보통주 주당 배당금은 얼마인가요?",
+    "expected_terms": [
+      "보통주",
+      "주당배당금"
+    ],
+    "expected_chunk_ids": [
+      "20240312000736-c-2756"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "삼성전자 2023 사업보고서 기준 제55기(2023년) 보통주 주당 배당금은 361원입니다.",
+    "last_qa_answer": "삼성전자 2023 사업보고서 기준 제55기(2023년) 보통주 주당 배당금은 361원입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2023_013",
+    "corp_name": "삼성전자",
+    "report_year": "2023",
+    "report_group": "annual",
+    "question": "삼성전자 2023 사업보고서 기준 우선주 주당 배당금은 얼마인가요?",
+    "expected_terms": [
+      "우선주",
+      "주당배당금"
+    ],
+    "expected_chunk_ids": [
+      "20240312000736-c-2756"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "우선주 주당 배당금은 362원(362%)입니다.",
+    "last_qa_answer": "우선주 주당 배당금은 362원(362%)입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2023_014",
+    "corp_name": "삼성전자",
+    "report_year": "2023",
+    "report_group": "annual",
+    "question": "삼성전자 2023 사업보고서의 V. 회계감사인의 감사의견 등 항목에서 제55기 회계감사인의 감사의견은 무엇인가요?",
+    "expected_terms": [
+      "회계감사인의 감사의견",
+      "삼정회계법인",
+      "적정"
+    ],
+    "expected_answer": "삼정회계법인의 감사의견은 적정입니다.",
+    "note": "감사위원회/내부감사 노이즈를 피하기 위해 V. 회계감사인의 감사의견 등 항목을 명시",
+    "expected_chunk_ids": [
+      "20240312000736-c-0767"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "last_qa_answer": "삼성전자 제55기(당기)에 대해 삼정회계법인이 수행한 회계감사의 감사의견은 \"적정\"입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2023_015",
+    "corp_name": "삼성전자",
+    "report_year": "2023",
+    "report_group": "annual",
+    "question": "삼성전자 2023 사업보고서의 VII. 주주에 관한 사항 중 최대주주 및 그 특수관계인의 주식소유 현황에서 최대주주 본인 삼성생명보험㈜의 보통주 기말 지분율은 얼마인가요?",
+    "expected_terms": [
+      "최대주주 및 그 특수관계인의 주식소유 현황",
+      "삼성생명보험",
+      "최대주주 본인",
+      "보통주",
+      "8.51"
+    ],
+    "expected_answer": "삼성생명보험㈜의 보통주 기말 지분율은 8.51%입니다.",
+    "note": "종속기업 지분율 표와 혼동하지 않도록 VII. 주주에 관한 사항 및 최대주주 본인을 명시",
+    "expected_chunk_ids": [
+      "20240312000736-c-0892"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "last_qa_answer": "8.51%",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2023_016",
+    "corp_name": "삼성전자",
+    "report_year": "2023",
+    "report_group": "annual",
+    "question": "삼성전자 2023 사업보고서 기준 자기주식 보유 현황은 어떻게 되나요?",
+    "expected_terms": [
+      "자기주식"
+    ],
+    "expected_chunk_ids": [
+      "20240312000736-c-0094"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "2023년 12월 31일 기준 삼성전자는 자기주식을 보유하고 있지 않습니다. 공시에 따르면 \"당사는 자기주식을 주주환원의 목적으로 2018년 중 모두 소각하였으며 공시대상기간 중 자기주식의 취득 및 처분거래는 없습니다.\"라고 명시되어 있습니다.",
+    "last_qa_answer": "2023년 12월 31일 기준 삼성전자는 자기주식을 보유하고 있지 않습니다. 공시에 따르면 \"당사는 자기주식을 주주환원의 목적으로 2018년 중 모두 소각하였으며 공시대상기간 중 자기주식의 취득 및 처분거래는 없습니다.\"라고 명시되어 있습니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2023_017",
+    "corp_name": "삼성전자",
+    "report_year": "2023",
+    "report_group": "annual",
+    "question": "삼성전자 2023 사업보고서의 주식의 총수 등 항목에서 이익으로 소각한 보통주 수는 몇 주인가요?",
+    "expected_terms": [
+      "주식의 총수",
+      "이익으로 소각",
+      "보통주",
+      "1,810,684,300"
+    ],
+    "expected_answer": "보통주 1,810,684,300주입니다.",
+    "note": "원문 표현이 '이익소각'이 아니라 '이익으로 소각'이므로 expected_terms를 원문 표현에 맞춤",
+    "expected_chunk_ids": [
+      "20240312000736-c-0083"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "last_qa_answer": "보통주 1,810,684,300주입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2024_001",
+    "corp_name": "삼성전자",
+    "report_year": "2024",
+    "report_group": "annual",
+    "question": "삼성전자 2024 사업보고서 기준 보통주 발행주식총수는 몇 주인가요?",
+    "expected_terms": [
+      "보통주",
+      "발행주식총수"
+    ],
+    "expected_chunk_ids": [
+      "20250311001085-c-0691",
+      "20250311001085-c-0957",
+      "20250311001085-c-1589"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "보통주 발행주식총수는 5,969,782,550주입니다.",
+    "last_qa_answer": "보통주 발행주식총수는 5,969,782,550주입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2024_002",
+    "corp_name": "삼성전자",
+    "report_year": "2024",
+    "report_group": "annual",
+    "question": "삼성전자 2024 사업보고서 기준 우선주 발행주식총수는 몇 주인가요?",
+    "expected_terms": [
+      "우선주",
+      "발행주식총수"
+    ],
+    "expected_chunk_ids": [
+      "20250311001085-c-0692",
+      "20250311001085-c-0957",
+      "20250311001085-c-1589"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "822,886,700주",
+    "last_qa_answer": "822,886,700주",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2024_003",
+    "corp_name": "삼성전자",
+    "report_year": "2024",
+    "report_group": "annual",
+    "question": "삼성전자 2024 사업보고서 기준 보통주 유통주식수는 몇 주인가요?",
+    "expected_terms": [
+      "보통주",
+      "유통주식수"
+    ],
+    "expected_chunk_ids": [
+      "20250311001085-c-0695",
+      "20250311001085-c-0958"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "2024년말 현재 삼성전자의 보통주 유통주식수는 5,940,082,550주입니다.",
+    "last_qa_answer": "2024년말 현재 삼성전자의 보통주 유통주식수는 5,940,082,550주입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2024_004",
+    "corp_name": "삼성전자",
+    "report_year": "2024",
+    "report_group": "annual",
+    "question": "삼성전자 2024 사업보고서 기준 우선주 유통주식수는 몇 주인가요?",
+    "expected_terms": [
+      "우선주",
+      "유통주식수"
+    ],
+    "expected_chunk_ids": [
+      "20250311001085-c-0695",
+      "20250311001085-c-0958"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "818,836,700주",
+    "last_qa_answer": "818,836,700주",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2024_005",
+    "corp_name": "삼성전자",
+    "report_year": "2024",
+    "report_group": "annual",
+    "question": "삼성전자 2024 사업보고서 기준 연결대상 종속기업은 몇 개사인가요?",
+    "expected_terms": [
+      "연결대상",
+      "종속기업"
+    ],
+    "expected_chunk_ids": [
+      "20250311001085-c-0677",
+      "20250311001085-c-0828"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "공시에 따르면, 삼성전자의 연결대상 종속기업은 2024년말 현재 228개사입니다.",
+    "last_qa_answer": "공시에 따르면, 삼성전자의 연결대상 종속기업은 2024년말 현재 228개사입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2024_006",
+    "corp_name": "삼성전자",
+    "report_year": "2024",
+    "report_group": "annual",
+    "question": "삼성전자 2024 사업보고서 기준 관계기업과 공동기업은 몇 개인가요?",
+    "expected_terms": [
+      "관계기업",
+      "공동기업"
+    ],
+    "expected_chunk_ids": [
+      "20250311001085-c-0154",
+      "20250311001085-c-0828"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "삼성전자는 2024 사업보고서 기준으로 \"삼성전기㈜ 등 35개 관계기업과 공동기업\"을 보유하고 있습니다.",
+    "last_qa_answer": "삼성전자는 2024 사업보고서 기준으로 \"삼성전기㈜ 등 35개 관계기업과 공동기업\"을 보유하고 있습니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2024_007",
+    "corp_name": "삼성전자",
+    "report_year": "2024",
+    "report_group": "annual",
+    "question": "삼성전자 2024 사업보고서 기준 주요 사업부문은 어떻게 구분되나요?",
+    "expected_terms": [
+      "사업부문"
+    ],
+    "expected_chunk_ids": [
+      "20250311001085-c-0726"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "제공된 공시 근거에 따르면, 삼성전자는 2024년 사업을 다음과 같은 주요 사업부문으로 구분하고 있습니다.\n\n1) DX 부문: TV, 모니터, 냉장고, 세탁기, 에어컨, 스마트폰, 네트워크시스템, PC 등 완제품을 포함하는 부문\n2) DS 부문: DRAM, NAND Flash, 모바일AP 등 반도체 부품을 포함하는 부문\n3) SDC: 스마트폰용 OLED 패널 등을 포함하는 디스플레이 부문\n4) Harman: 디지털 콕핏, 카오디오, 포터블 스피커 등을 포함하는 부문\n5) 기타: 부문 간 내부거래 제거 등으로 구성된 기타 부문\n\n위 다섯 가지가 2024년 사업보고서 기준으로 공시된 주요 사업부문 구분입니다.",
+    "last_qa_answer": "제공된 공시 근거에 따르면, 삼성전자는 2024년 사업을 다음과 같은 주요 사업부문으로 구분하고 있습니다.\n\n1) DX 부문: TV, 모니터, 냉장고, 세탁기, 에어컨, 스마트폰, 네트워크시스템, PC 등 완제품을 포함하는 부문\n2) DS 부문: DRAM, NAND Flash, 모바일AP 등 반도체 부품을 포함하는 부문\n3) SDC: 스마트폰용 OLED 패널 등을 포함하는 디스플레이 부문\n4) Harman: 디지털 콕핏, 카오디오, 포터블 스피커 등을 포함하는 부문\n5) 기타: 부문 간 내부거래 제거 등으로 구성된 기타 부문\n\n위 다섯 가지가 2024년 사업보고서 기준으로 공시된 주요 사업부문 구분입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2024_008",
+    "corp_name": "삼성전자",
+    "report_year": "2024",
+    "report_group": "annual",
+    "question": "삼성전자 2024 사업보고서 기준 DX 부문의 주요 제품은 무엇인가요?",
+    "expected_terms": [
+      "DX",
+      "주요 제품"
+    ],
+    "expected_chunk_ids": [
+      "20250311001085-c-0726"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "공시에 따르면 2024년 기준 삼성전자 DX 부문의 주요 제품은 \"TV, 모니터, 냉장고, 세탁기, 에어컨, 스마트폰, 네트워크시스템, PC 등\"입니다.",
+    "last_qa_answer": "공시에 따르면 2024년 기준 삼성전자 DX 부문의 주요 제품은 \"TV, 모니터, 냉장고, 세탁기, 에어컨, 스마트폰, 네트워크시스템, PC 등\"입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2024_009",
+    "corp_name": "삼성전자",
+    "report_year": "2024",
+    "report_group": "annual",
+    "question": "삼성전자 2024 사업보고서 기준 DS 부문의 주요 제품은 무엇인가요?",
+    "expected_terms": [
+      "DS",
+      "주요 제품"
+    ],
+    "expected_chunk_ids": [
+      "20250311001085-c-0726",
+      "20250311001085-c-0747"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "공시에 따르면 2024년 기준 삼성전자 DS 부문의 주요 제품은 \"DRAM, NAND Flash, 모바일AP 등\"입니다.",
+    "last_qa_answer": "공시에 따르면 2024년 기준 삼성전자 DS 부문의 주요 제품은 \"DRAM, NAND Flash, 모바일AP 등\"입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2024_010",
+    "corp_name": "삼성전자",
+    "report_year": "2024",
+    "report_group": "annual",
+    "question": "삼성전자 2024 사업보고서 기준 연구개발비는 얼마인가요?",
+    "expected_terms": [
+      "연구개발비"
+    ],
+    "expected_chunk_ids": [
+      "20250311001085-c-0765",
+      "20250311001085-c-0766"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "2024년(제56기) 삼성전자의 연구개발비용 총계는 35,021,531백만원이며, 이 중 정부보조금 및 자산화를 제외하고 당기비용으로 처리된 연구개발비(비용)는 34,998,142백만원입니다.",
+    "last_qa_answer": "2024년(제56기) 삼성전자의 연구개발비용 총계는 35,021,531백만원이며, 이 중 정부보조금 및 자산화를 제외하고 당기비용으로 처리된 연구개발비(비용)는 34,998,142백만원입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2024_011",
+    "corp_name": "삼성전자",
+    "report_year": "2024",
+    "report_group": "annual",
+    "question": "삼성전자 2024 사업보고서의 이익잉여금처분계산서 1. 배당금 항목에서 제56기 배당금으로 표시된 금액을 그대로 답하세요.",
+    "expected_terms": [
+      "이익잉여금처분액",
+      "배당금",
+      "제56기",
+      "2,454,307"
+    ],
+    "expected_answer": "2,454,307백만원",
+    "note": "retrieval은 성공했으나 LLM이 표 조각을 읽고 answerable=false로 판단했으므로 질문을 더 직접화",
+    "expected_chunk_ids": [
+      "20250311001085-c-0562",
+      "20250311001085-c-1181"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "last_qa_answer": "2,454,307",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2024_012",
+    "corp_name": "삼성전자",
+    "report_year": "2024",
+    "report_group": "annual",
+    "question": "삼성전자 2024 사업보고서 기준 보통주 주당 배당금은 얼마인가요?",
+    "expected_terms": [
+      "보통주",
+      "주당배당금"
+    ],
+    "expected_chunk_ids": [
+      "20250311001085-c-0562"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "삼성전자 2024 사업보고서 기준 제56기 보통주 주당 배당금은 363원입니다.",
+    "last_qa_answer": "삼성전자 2024 사업보고서 기준 제56기 보통주 주당 배당금은 363원입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2024_013",
+    "corp_name": "삼성전자",
+    "report_year": "2024",
+    "report_group": "annual",
+    "question": "삼성전자 2024 사업보고서 기준 우선주 주당 배당금은 얼마인가요?",
+    "expected_terms": [
+      "우선주",
+      "주당배당금"
+    ],
+    "expected_chunk_ids": [
+      "20250311001085-c-0562"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "우선주 주당 배당금은 364원입니다.",
+    "last_qa_answer": "우선주 주당 배당금은 364원입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2024_014",
+    "corp_name": "삼성전자",
+    "report_year": "2024",
+    "report_group": "annual",
+    "question": "삼성전자 2024 사업보고서의 V. 회계감사인의 감사의견 등 항목에서 제56기 회계감사인의 감사의견은 무엇인가요?",
+    "expected_terms": [
+      "회계감사인의 감사의견",
+      "삼정회계법인",
+      "적정의견"
+    ],
+    "expected_answer": "삼정회계법인의 감사의견은 적정의견입니다.",
+    "note": "감사위원회 커뮤니케이션 노이즈를 피하기 위해 외부감사 항목을 명시",
+    "expected_chunk_ids": [
+      "20250311001085-c-1460"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "last_qa_answer": "삼성전자 제56기(당기) 회계감사인의 감사의견은 ‘적정의견’입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2024_015",
+    "corp_name": "삼성전자",
+    "report_year": "2024",
+    "report_group": "annual",
+    "question": "삼성전자 2024 사업보고서의 VII. 주주에 관한 사항 중 최대주주 및 그 특수관계인의 주식소유 현황에서 최대주주 본인 삼성생명보험㈜의 보통주 기말 지분율은 얼마인가요?",
+    "expected_terms": [
+      "최대주주 및 그 특수관계인의 주식소유 현황",
+      "삼성생명보험",
+      "최대주주 본인",
+      "보통주",
+      "8.51"
+    ],
+    "expected_answer": "삼성생명보험㈜의 보통주 기말 지분율은 8.51%입니다.",
+    "note": "종속기업 지분율 표와 혼동하지 않도록 VII. 주주에 관한 사항 및 최대주주 본인을 명시",
+    "expected_chunk_ids": [
+      "20250311001085-c-1616"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "last_qa_answer": "8.51%",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2024_016",
+    "corp_name": "삼성전자",
+    "report_year": "2024",
+    "report_group": "annual",
+    "question": "삼성전자 2024 사업보고서의 자기주식 항목에서 2024년 중 주주가치 제고 목적으로 취득한 보통주 자기주식 수는 몇 주인가요?",
+    "expected_terms": [
+      "자기주식",
+      "보통주",
+      "29,700,000"
+    ],
+    "expected_answer": "보통주 29,700,000주입니다.",
+    "note": "자기주식수와 보유비율을 동시에 묻던 기존 질문은 chunk context가 부족해, 취득한 보통주 자기주식 수로 좁힘",
+    "expected_chunk_ids": [
+      "20250311001085-c-0707",
+      "20250311001085-c-0709"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "last_qa_answer": "29,700,000주",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2024_017",
+    "corp_name": "삼성전자",
+    "report_year": "2024",
+    "report_group": "annual",
+    "question": "삼성전자 2024 사업보고서의 주식의 총수 등 항목에서 이익으로 소각한 보통주 수는 몇 주인가요?",
+    "expected_terms": [
+      "주식의 총수",
+      "이익으로 소각",
+      "보통주",
+      "1,810,684,300"
+    ],
+    "expected_answer": "보통주 1,810,684,300주입니다.",
+    "note": "원문 표현이 '이익소각'이 아니라 '이익으로 소각'이므로 expected_terms를 원문 표현에 맞춤",
+    "expected_chunk_ids": [
+      "20250311001085-c-0695"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "last_qa_answer": "1,810,684,300주",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2025_001",
+    "corp_name": "삼성전자",
+    "report_year": "2025",
+    "report_group": "annual",
+    "question": "삼성전자 2025 사업보고서 기준 보통주 발행주식총수는 몇 주인가요?",
+    "expected_terms": [
+      "보통주",
+      "발행주식총수",
+      "5,919,637,922"
+    ],
+    "expected_chunk_ids": [
+      "20260310002820-c-0030",
+      "20260310002820-c-1038"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "5,919,637,922주",
+    "last_qa_answer": "5,919,637,922주",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2025_002",
+    "corp_name": "삼성전자",
+    "report_year": "2025",
+    "report_group": "annual",
+    "question": "삼성전자 2025 사업보고서 기준 우선주 발행주식총수는 몇 주인가요?",
+    "expected_terms": [
+      "우선주",
+      "발행주식총수",
+      "815,974,664"
+    ],
+    "expected_chunk_ids": [
+      "20260310002820-c-0031",
+      "20260310002820-c-1038"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "815,974,664주",
+    "last_qa_answer": "815,974,664주",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2025_003",
+    "corp_name": "삼성전자",
+    "report_year": "2025",
+    "report_group": "annual",
+    "question": "삼성전자 2025 사업보고서 기준 보통주 유통주식수는 몇 주인가요?",
+    "expected_terms": [
+      "보통주",
+      "유통주식수",
+      "5,827,808,935"
+    ],
+    "expected_chunk_ids": [
+      "20260310002820-c-0034",
+      "20260310002820-c-0335",
+      "20260310002820-c-0565",
+      "20260310002820-c-0044"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2_plus_manual_valid_top1_chunks",
+    "expected_answer": "5,827,808,935주",
+    "last_qa_answer": "5,827,808,935주",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2025_004",
+    "corp_name": "삼성전자",
+    "report_year": "2025",
+    "report_group": "annual",
+    "question": "삼성전자 2025 사업보고서 기준 우선주 유통주식수는 몇 주인가요?",
+    "expected_terms": [
+      "우선주",
+      "유통주식수",
+      "802,371,203"
+    ],
+    "expected_chunk_ids": [
+      "20260310002820-c-0034",
+      "20260310002820-c-0335",
+      "20260310002820-c-0565",
+      "20260310002820-c-0044"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2_plus_manual_valid_top1_chunks",
+    "expected_answer": "802,371,203주",
+    "last_qa_answer": "802,371,203주",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2025_005",
+    "corp_name": "삼성전자",
+    "report_year": "2025",
+    "report_group": "annual",
+    "question": "삼성전자 2025 사업보고서 기준 연결대상 종속기업은 몇 개사인가요?",
+    "expected_terms": [
+      "연결대상",
+      "종속기업",
+      "308"
+    ],
+    "expected_chunk_ids": [
+      "20260310002820-c-0008",
+      "20260310002820-c-3288"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "삼성전자의 연결대상 종속기업은 2025년말 현재 308개사입니다.",
+    "last_qa_answer": "삼성전자의 연결대상 종속기업은 2025년말 현재 308개사입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2025_006",
+    "corp_name": "삼성전자",
+    "report_year": "2025",
+    "report_group": "annual",
+    "question": "삼성전자 2025 사업보고서 기준 관계기업과 공동기업은 몇 개인가요?",
+    "expected_terms": [
+      "관계기업",
+      "공동기업",
+      "33"
+    ],
+    "expected_chunk_ids": [
+      "20260310002820-c-3288",
+      "20260310002820-c-0189"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "삼성전자는 기업회계기준서 제1110호 '연결재무제표'에 따라 삼성전기㈜ 등 33개 관계기업과 공동기업을 지분법적용대상으로 하여 연결재무제표를 작성하였습니다. 따라서 2025 사업보고서 기준 관계기업과 공동기업은 총 33개입니다.",
+    "last_qa_answer": "삼성전자는 기업회계기준서 제1110호 '연결재무제표'에 따라 삼성전기㈜ 등 33개 관계기업과 공동기업을 지분법적용대상으로 하여 연결재무제표를 작성하였습니다. 따라서 2025 사업보고서 기준 관계기업과 공동기업은 총 33개입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2025_007",
+    "corp_name": "삼성전자",
+    "report_year": "2025",
+    "report_group": "annual",
+    "question": "삼성전자 2025 사업보고서 기준 연결대상 종속기업은 전년말 대비 몇 개 증가하고 몇 개 감소했나요?",
+    "expected_terms": [
+      "전년말",
+      "91",
+      "11"
+    ],
+    "expected_chunk_ids": [
+      "20260310002820-c-0008",
+      "20260310002820-c-2571",
+      "20260310002820-c-0009"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "삼성전자 2025 사업보고서에 따르면, 연결대상 종속기업은 전년말 대비 91개 기업이 증가하고 11개 기업이 감소하였습니다.",
+    "last_qa_answer": "삼성전자 2025 사업보고서에 따르면, 연결대상 종속기업은 전년말 대비 91개 기업이 증가하고 11개 기업이 감소하였습니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2025_008",
+    "corp_name": "삼성전자",
+    "report_year": "2025",
+    "report_group": "annual",
+    "question": "삼성전자 2025 사업보고서 기준 주요 사업부문은 어떻게 구분되나요?",
+    "expected_terms": [
+      "사업부문"
+    ],
+    "expected_chunk_ids": [
+      "20260310002820-c-0004",
+      "20260310002820-c-0080"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "공시에 따르면, 삼성전자는 제품의 특성에 따라 다음과 같이 주요 사업부문을 구분하고 있습니다.\n\n1) DX(Device eXperience) 부문\n- TV, 모니터, 냉장고, 세탁기, 에어컨, 스마트폰, 네트워크시스템, PC 등 완제품을 생산·판매하는 사업으로 구성됨.\n\n2) DS(Device Solutions) 부문\n- DRAM, NAND Flash, 모바일AP 등 반도체 부품 사업.\n\n3) SDC (삼성디스플레이㈜ 및 그 종속기업)\n- 스마트폰용 OLED 패널 등 패널 사업.\n\n4) Harman (Harman International Industries, Inc. 및 그 종속기업)\n- 디지털 콕핏(Digital Cockpit), 카오디오, 포터블 스피커 등 전장부품사업 등을 영위.\n\n또한 사업보고서는 이 4개 부문과 ‘기타(부문간 내부거래 제거 등)’로 매출을 구분해 제시하고 있습니다.",
+    "last_qa_answer": "공시에 따르면, 삼성전자는 제품의 특성에 따라 다음과 같이 주요 사업부문을 구분하고 있습니다.\n\n1) DX(Device eXperience) 부문\n- TV, 모니터, 냉장고, 세탁기, 에어컨, 스마트폰, 네트워크시스템, PC 등 완제품을 생산·판매하는 사업으로 구성됨.\n\n2) DS(Device Solutions) 부문\n- DRAM, NAND Flash, 모바일AP 등 반도체 부품 사업.\n\n3) SDC (삼성디스플레이㈜ 및 그 종속기업)\n- 스마트폰용 OLED 패널 등 패널 사업.\n\n4) Harman (Harman International Industries, Inc. 및 그 종속기업)\n- 디지털 콕핏(Digital Cockpit), 카오디오, 포터블 스피커 등 전장부품사업 등을 영위.\n\n또한 사업보고서는 이 4개 부문과 ‘기타(부문간 내부거래 제거 등)’로 매출을 구분해 제시하고 있습니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2025_009",
+    "corp_name": "삼성전자",
+    "report_year": "2025",
+    "report_group": "annual",
+    "question": "삼성전자 2025 사업보고서 기준 DX 부문의 주요 제품은 무엇인가요?",
+    "expected_terms": [
+      "DX",
+      "주요 제품"
+    ],
+    "expected_chunk_ids": [
+      "20260310002820-c-0004",
+      "20260310002820-c-0080"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "공시에 따르면, 삼성전자 2025년 기준 DX(Device eXperience) 부문의 주요 제품은 \"TV, 모니터, 냉장고, 세탁기, 에어컨, 스마트폰, 네트워크시스템, PC 등\"입니다.",
+    "last_qa_answer": "공시에 따르면, 삼성전자 2025년 기준 DX(Device eXperience) 부문의 주요 제품은 \"TV, 모니터, 냉장고, 세탁기, 에어컨, 스마트폰, 네트워크시스템, PC 등\"입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2025_010",
+    "corp_name": "삼성전자",
+    "report_year": "2025",
+    "report_group": "annual",
+    "question": "삼성전자 2025 사업보고서 기준 DS 부문의 주요 제품은 무엇인가요?",
+    "expected_terms": [
+      "DS",
+      "주요 제품"
+    ],
+    "expected_chunk_ids": [
+      "20260310002820-c-0004",
+      "20260310002820-c-0080"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "공시된 2025년 사업보고서에 따르면, DS(Device Solutions) 부문의 주요 제품은 \"DRAM, NAND Flash, 모바일AP 등\"입니다.",
+    "last_qa_answer": "공시된 2025년 사업보고서에 따르면, DS(Device Solutions) 부문의 주요 제품은 \"DRAM, NAND Flash, 모바일AP 등\"입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2025_011",
+    "corp_name": "삼성전자",
+    "report_year": "2025",
+    "report_group": "annual",
+    "question": "삼성전자 2025 사업보고서 기준 연구개발비는 얼마인가요?",
+    "expected_terms": [
+      "연구개발비"
+    ],
+    "expected_chunk_ids": [
+      "20260310002820-c-0119"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "2025년(제57기) 삼성전자의 연구개발비용 총계는 37조 7,548억원(37,754,815백만원)이며, 정부보조금을 차감한 연구개발비용 계 및 당기 비용으로 회계처리된 연구개발비는 37조 7,404억원(37,740,392백만원)입니다.",
+    "last_qa_answer": "2025년(제57기) 삼성전자의 연구개발비용 총계는 37조 7,548억원(37,754,815백만원)이며, 정부보조금을 차감한 연구개발비용 계 및 당기 비용으로 회계처리된 연구개발비는 37조 7,404억원(37,740,392백만원)입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2025_012",
+    "corp_name": "삼성전자",
+    "report_year": "2025",
+    "report_group": "annual",
+    "question": "삼성전자 2025 사업보고서의 이익잉여금처분계산서 1. 배당금 항목에서 제57기 배당금은 얼마인가요?",
+    "expected_terms": [
+      "이익잉여금처분액",
+      "배당금",
+      "제57기",
+      "3,753,484"
+    ],
+    "expected_answer": "3,753,484백만원",
+    "note": "기존 질문은 지급될 배당금 top chunk가 전기 값 2,454,307로 끌렸으므로 제57기와 이익잉여금처분계산서를 명시",
+    "expected_chunk_ids": [
+      "20260310002820-c-3017",
+      "20260310002820-c-0580"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "last_qa_answer": "3,753,484",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2025_013",
+    "corp_name": "삼성전자",
+    "report_year": "2025",
+    "report_group": "annual",
+    "question": "삼성전자 2025 사업보고서 기준 보통주 주당 배당금은 얼마인가요?",
+    "expected_terms": [
+      "보통주",
+      "주당배당금"
+    ],
+    "expected_chunk_ids": [
+      "20260310002820-c-3017"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "2025 사업연도(제57기) 기준 보통주 주당 배당금은 566원입니다.",
+    "last_qa_answer": "2025 사업연도(제57기) 기준 보통주 주당 배당금은 566원입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2025_014",
+    "corp_name": "삼성전자",
+    "report_year": "2025",
+    "report_group": "annual",
+    "question": "삼성전자 2025 사업보고서 기준 우선주 주당 배당금은 얼마인가요?",
+    "expected_terms": [
+      "우선주",
+      "주당배당금"
+    ],
+    "expected_chunk_ids": [
+      "20260310002820-c-3017"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "우선주 주당 배당금은 567원(567%)입니다.",
+    "last_qa_answer": "우선주 주당 배당금은 567원(567%)입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2025_015",
+    "corp_name": "삼성전자",
+    "report_year": "2025",
+    "report_group": "annual",
+    "question": "삼성전자 2025 사업보고서 기준 감사의견은 무엇인가요?",
+    "expected_terms": [
+      "감사의견"
+    ],
+    "expected_chunk_ids": [
+      "20260310002820-c-0865"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "expected_answer": "공시에 따르면 삼성전자 제57기(당기, 2025 사업연도)에 대해 삼정회계법인이 감사보고서를 제출했으며, 감사의견은 ‘적정의견’입니다.",
+    "last_qa_answer": "공시에 따르면 삼성전자 제57기(당기, 2025 사업연도)에 대해 삼정회계법인이 감사보고서를 제출했으며, 감사의견은 ‘적정의견’입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  },
+  {
+    "id": "SS_2025_016",
+    "corp_name": "삼성전자",
+    "report_year": "2025",
+    "report_group": "annual",
+    "question": "삼성전자 2025 사업보고서의 주식 소유 현황에서 5% 이상 주주인 삼성생명보험㈜의 소유주식수와 지분율은 얼마인가요?",
+    "expected_terms": [
+      "5% 이상 주주",
+      "삼성생명보험",
+      "508,329,171",
+      "8.59"
+    ],
+    "expected_answer": "삼성생명보험㈜의 소유주식수는 508,329,171주이고 지분율은 8.59%입니다.",
+    "note": "최대주주 본인 표 대신 2025년 문서에서 명확히 검색되는 5% 이상 주주 표 기준으로 정제",
+    "expected_chunk_ids": [
+      "20260310002820-c-1096"
+    ],
+    "expected_chunk_source": "qa_citations_auto_from_refined_v2",
+    "last_qa_answer": "삼성전자 2025 사업보고서의 ‘가. 주식 소유 현황’에 따르면, 5% 이상 주주인 삼성생명보험㈜의 소유주식수는 508,329,171주이며, 지분율은 8.59%입니다.",
+    "last_qa_passed": true,
+    "last_qa_answerable": true
+  }
+]
